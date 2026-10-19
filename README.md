@@ -81,6 +81,7 @@ VOFA 13 路、115200（以代码为准）；日志/标定以后放 `experiments/
 | [`docs/03-theory/k-matrix.md`](docs/03-theory/k-matrix.md) | K 三份候选/来源（草案） |
 | [`docs/04-parameters/parameters.md`](docs/04-parameters/parameters.md) | 参数台账（唯一事实源） |
 | [`docs/00-plan/open-questions.md`](docs/00-plan/open-questions.md) | 16 条 P0 问题清单 |
+| [`docs/00-plan/progress-20261019.md`](docs/00-plan/progress-20261019.md) | 当前进度快照（2026-10-19） |
 | [`docs/00-plan/todo/`](docs/00-plan/todo/README.md) | 逐项解决的待办 |
 | [`docs/09-references/index.md`](docs/09-references/index.md) | 外部资料索引 |
 | [`CHANGELOG.md`](CHANGELOG.md) | 变更/回退记录 |

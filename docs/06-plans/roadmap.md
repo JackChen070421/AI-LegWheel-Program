@@ -27,7 +27,7 @@
 
 ## C. 最近 2 周（建议）
 
-1. **先做不依赖测量的**：TODO-02（构建入口）+ TODO-06（旧车代码/删除已基本完成）；
+1. ✅ TODO-02 构建入口/include 清理（Keil Build 复验通过）；⏳ VSCode IntelliSense 配置下次做；
 2. 再测：轮半径、轮距、车体/腿/轮质量拆分（TODO-03/04/07）；
 3. 对照三份 K，确定生效来源（TODO-01）；
 4. 写 `can-protocol.md` v0.1 + 状态映射（TODO-05）；

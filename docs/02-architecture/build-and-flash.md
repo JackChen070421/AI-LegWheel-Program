@@ -1,7 +1,7 @@
 # 构建与烧录（Build & Flash）
 
-> 最后更新：2026-10-19（include 清理，待 Build 复验）  
-> 状态：**Keil + CubeMX 为当前事实工作流**；Keil Build 已验证；include 已清理待复验；CMake 未安装/不启用；烧录步骤待确认（C4）。  
+> 最后更新：2026-10-19（include 清理，Build 复验通过）  
+> 状态：**Keil + CubeMX 为当前事实工作流**；Keil Build 已验证（含清理后）；CMake 未安装/不启用；烧录步骤待确认（C4）。  
 > 安装根 `C:\STM32+Vscode+Keil5` **只读**：只浏览/读版本，不修改、不移动、不写（AGENTS.md 黄金原则 9）。
 
 ## 1. 本机工具链（2026-10-19 只读检查）
@@ -12,7 +12,7 @@
 | ARMCC | `...\MDK\Core\ARM\ARMCC\bin\armcc.exe` | 5.06.0.189 | 旧编译器（当前工程未用） |
 | ARMCLANG | `...\MDK\Core\ARM\ARMCLANG\bin\armclang.exe` | 16.0.0（LLVM 16） | **工程实际使用 ARM Compiler 6.19 / ARMCLANG** |
 | STM32CubeMX | `...\STM32CubeMx\Core\STM32CubeMX.exe` | **>6.17.0-RC5** | 板级初始化/外设配置；`.ioc` 保留 |
-| VS Code | `...\VScode\Core\Code.exe` | 1.142.0 | 编辑器/Keil Assistant（待确认） |
+| VS Code | `...\VScode\Core\Code.exe` | 1.142.0 | 用户打开 `firmware/LegWheel`；IntelliSense 配置待生成 |
 | ARM GNU GCC | `C:\Program Files (x86)\Arm\GNU Toolchain mingw-w64-i686-arm-none-eabi\bin\arm-none-eabi-gcc.exe` | **15.3.1** | 不在安装根；CMake 旧 cache 指向 15.2（失效） |
 | CMake | **未找到** | — | 安装根/PATH/常见路径均无；`build/` 旧 cache 指向 `C:/msys64`、`C:/Program Files/toolchain/...`（不存在） |
 | Keil H7 器件包 | `...\MDK\Packs\Keil\STM32H7xx_DFP` | 4.1.3 | STM32H7 支持 |
@@ -37,7 +37,7 @@
 
 - 清理前：34 个 include，15 存在 / 19 不存在（旧“按设备分目录”布局）；
 - 已删除 19 条失效项，保留 15 条；静态检查 **0 missing**；备份 `archive/legacy/config-backups/LegWheel.uvprojx-20261019.bak`；
-- 原配置 Build 已验证；清理后 **待你关闭/重开 Keil 再 Build 复验**（删除的目录不影响头文件查找，风险低）；
+- **Build 复验：✅ 用户确认清理后编译成功（2026-10-19）**；
 - 若复验失败：用备份覆盖 `uvprojx` 或 `git checkout` 回退。
 
 ### 构建步骤（已由用户验证）
@@ -59,6 +59,13 @@
 - **CubeMX 工作流（用户 2026-10-19 选择 B）**：只在**副本**上生成代码，再人工合并到当前工程；**不直接用 CubeMX 覆盖当前 `uvprojx`/工程**。流程：复制 `.ioc`/工程到临时目录 → 生成 → diff `Core/` → 人工合并 → Build → 提交；
 - CubeMX 生成工程类型（Keil/CMake）与“是否还在用 CubeMX 改外设”待确认（C3）。
 
+### 3.1 VSCode / IntelliSense（用户 2026-10-19）
+
+- 用户使用 VSCode，打开 `firmware/LegWheel`；
+- 当前 `MDK-ARM/.vscode/c_cpp_properties.json` 指向旧路径 `d:\RM\27-transistor-codes\...`，在 LegWheel 工作区不生效；
+- 下次：生成 `firmware/LegWheel/.vscode/c_cpp_properties.json`（15 条 include + ARMCLANG include），旧的 `MDK-ARM/.vscode` 归档/删除；
+- `compile_flags.txt`/`_inc_list.txt` 仍归档，是否重生成待定。
+
 ## 4. CMake（现状：未找到，不可复现）
 
 | 事实 | 证据 |
@@ -69,7 +76,7 @@
 | 工程根**没有** `CMakeLists.txt` | 全仓库只在 CMSIS/DSP 厂商目录有 |
 | `compile_flags.txt` 原指向 `d:\RM-electro-control\...` | 已归档 `archive/legacy/stale-configs/compile_flags.txt`（2026-10-19，路径失效） |
 | `_inc_list.txt` 原指向 `D:/Github/Transistor-Wheeled-Legged-Robot/software` | 已归档 `archive/legacy/stale-configs/_inc_list.txt`（2026-10-19，路径失效） |
-| Keil `uvprojx` 的 114 个 `<FilePath>` 都存在；**19 个失效 include 已于 2026-10-19 删除**，剩 15 条，待 Build 复验 | 2026-10-19 清理（备份在 `archive/legacy/config-backups/`） |
+| Keil `uvprojx` 的 114 个 `<FilePath>` 都存在；**19 个失效 include 已于 2026-10-19 删除**，剩 15 条；**Build 复验成功** | 2026-10-19 清理（备份在 `archive/legacy/config-backups/`） |
 
 结论：**CMake 未安装/不启用**；`LegWheel/build/` 已在 Tier A 删除，用户 2026-10-19 确认**删除即可、不恢复**。当前以 Keil + CubeMX 为准；如果以后真的要用 CMake/CLion，再单独开任务（安装 + 重建顶层 `CMakeLists.txt` + toolchain）。
 
@@ -103,7 +110,7 @@
 2. 烧录用 DAPLink 无线还是 ST-Link？步骤？
 3. **CMake 已澄清（2026-10-19）**：可能是理解错；`build/` 删除即可、不恢复；CMake 未安装/不启用。以后真要用再单独开任务。
 4. **CubeMX 工作流已选 B（2026-10-19）**：只在副本生成代码、手动合并；不直接覆盖当前工程。
-5. **include 清理已完成**：19 条失效项已删除，剩 15 条；待你 Build 复验。
-6. 是否使用 VSCode IntelliSense？如果不用，归档/删除 `.vscode/c_cpp_properties.json`、`compile_flags.txt`、`_inc_list.txt`；如果用，按当前路径重生成（需知道你打开哪个目录）。
+5. **include 清理已完成并 Build 复验通过**（2026-10-19）。
+6. **VSCode 已确认使用，打开 `firmware/LegWheel`**；下次生成该目录的 `.vscode/c_cpp_properties.json`；`compile_flags`/`_inc_list` 是否重生成待定。
 
 > 以上未确认前，不改构建配置；只记录。见 [TODO-02](../00-plan/todo/02-build-entry.md)。

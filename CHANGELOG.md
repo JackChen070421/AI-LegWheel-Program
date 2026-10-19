@@ -267,3 +267,13 @@
 - **Build 复验待做**：Keil 当前是打开状态，需关闭/重开（不要保存旧工程）后 Build；失败则用备份覆盖回退；
 - VSCode/IntelliSense、烧录方式、`compile_flags` 仍待确认；
 - 文档同步：build-and-flash / TODO-02 / open-questions / structure-audit。
+
+---
+
+## 2026-10-19 — TODO-02 Build 复验通过 + 今日收工
+
+- 用户确认 **清理后 Keil Build 成功**；include 34 → 15 的修改验证通过；
+- 用户确认 **使用 VSCode，打开 `firmware/LegWheel`**；下次生成 `firmware/LegWheel/.vscode/c_cpp_properties.json`，归档旧 `MDK-ARM/.vscode`；
+- 新增 `docs/00-plan/progress-20261019.md`（今日进度快照/恢复入口）；
+- 更新 TODO-02/build-and-flash/open-questions/structure-audit/roadmap/README；
+- tag：`todo2-include-cleanup`（本次记录 commit）。

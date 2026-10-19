@@ -39,8 +39,8 @@ LG-AI-process/
 
 | # | 优先级 | 问题 | 影响 | 动作 |
 |---|---|---|---|---|
-| F1 | P0 | `uvprojx` include 旧布局（34 个中 19 个不存在） | 工程有误导性配置 | ✅ 2026-10-19 已删 19 条、剩 15 条；备份 `archive/legacy/config-backups/`；**待 Build 复验** |
-| F2 | P0 | `MDK-ARM/.vscode/c_cpp_properties.json` 指向 `d:\RM\27-transistor-codes\...` | IntelliSense 失效/误导 | 待确认是否用 VSCode：重生成或归档 |
+| F1 | P0 | `uvprojx` include 旧布局（34 个中 19 个不存在） | 工程有误导性配置 | ✅ 2026-10-19 已删 19 条、剩 15 条；备份；**Build 复验通过** |
+| F2 | P0 | `MDK-ARM/.vscode/c_cpp_properties.json` 指向 `d:\RM\27-transistor-codes\...` | 用户打开 `firmware/LegWheel`，旧配置不生效 | 下次在 `firmware/LegWheel/.vscode/` 生成新配置；归档旧的 |
 | F3 | P0 | K 来源未定（三份候选） | 调参不可复现 | 建了 `docs/03-theory/k-matrix.md` 草案；TODO-01 |
 | F4 | P1 | CubeMX 重新生成 `uvprojx` 的流程未定义 | 手工 include 修复可能被覆盖 | ✅ 用户选择 **B：只在副本生成、手动合并**；不覆盖当前工程（TODO-02） |
 | F5 | P1 | `can-protocol.md`、`state-machine.md` 未建 | 云台联调/状态验收缺单一来源 | S4/TODO-05；`system.md` 暂含状态表 |
@@ -77,11 +77,11 @@ LG-AI-process/
 - `.gitignore` 补 `*.htm`/`*.build_log.htm`/`*.slxc`/`MathWorks/graphicsState.bin`/`.claude/`；
 - 删除 Keil 生成的 `LegWheel.htm`、`LegWheel.build_log.htm`（Build 可再生成）；
 - 更新 README/AGENTS/build/TODO-02/roadmap/open-questions 的编译状态与路径；
-- **Keil include 清理**：34 → 15（删除 19 条失效），备份 `archive/legacy/config-backups/LegWheel.uvprojx-20261019.bak`，静态检查 0 missing；待 Build 复验。
+- **Keil include 清理**：34 → 15（删除 19 条失效），备份 `archive/legacy/config-backups/LegWheel.uvprojx-20261019.bak`，静态检查 0 missing；**Build 复验通过**。
 
 ## 6. 下一步
 
-1. **你 Build 复验 include 清理**；并回答 VSCode/IntelliSense、烧录方式、`compile_flags` 三项（TODO-02）；
+1. **下次先做 VSCode IntelliSense 配置**：用户打开 `firmware/LegWheel`，生成 `.vscode/c_cpp_properties.json`，归档旧 `MDK-ARM/.vscode`；
 2. 之后做 **TODO-01（K 三份差异）**；
 3. P1 文档（can-protocol/state-machine/hardware-overview）等有数据再写；
 4. CI/测试框架等有需要再开。
