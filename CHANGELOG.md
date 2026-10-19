@@ -256,3 +256,14 @@
 
 - TODO-02 的 6 个问题（是否允许改 `uvprojx`、CubeMX 工作流、VSCode/IntelliSense、compile_flags、烧录、ARMCLANG 唯一化）；
 - K 来源（TODO-01）、can-protocol/state-machine、hardware-overview 更新。
+
+---
+
+## 2026-10-19 — TODO-02 Keil include 清理（待 Build 复验）
+
+- 用户允许修改 `uvprojx`；CubeMX 工作流选 **B：只在副本生成、手动合并**；
+- 备份：`archive/legacy/config-backups/LegWheel.uvprojx-20261019.bak`（55,476 B）；
+- 删除 19 条失效 include，保留 15 条；XML 解析通过、`<FilePath>` 114 个不变、静态检查 **0 missing**；
+- **Build 复验待做**：Keil 当前是打开状态，需关闭/重开（不要保存旧工程）后 Build；失败则用备份覆盖回退；
+- VSCode/IntelliSense、烧录方式、`compile_flags` 仍待确认；
+- 文档同步：build-and-flash / TODO-02 / open-questions / structure-audit。

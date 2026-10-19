@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H723xx,ARM_MATH_CM7,USE_PWR_LDO_SUPPLY</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32H7xx/Include;../Drivers/CMSIS/Include;../Devices/WS2812;../Bsp/UART;../Devices/IBUS;..\Applications\inc;../Algorithm;../Bsp/DWT;../Algorithm/inc;../Devices/IMU;../Drivers/CMSIS/DSP;../Devices/Saber_C3;../Devices/M1505B;..\Bsp\inc;../Middlewares/ST/ARM/DSP/Inc;../Devices/SBUS;../Devices/M6020;../Devices/DM8009P;../Devices/M3508;../Devices/tpid;../Devices/VOFA+;../Devices/N100;../Devices/dji_motor;../Devices/GM6020;../Devices/M2006;../Devices/XRobot_IMU;..\Devices\inc;..\Devices\SDM02</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32H7xx/Include;../Drivers/CMSIS/Include;..\Applications\inc;../Algorithm;../Algorithm/inc;../Drivers/CMSIS/DSP;..\Bsp\inc;../Middlewares/ST/ARM/DSP/Inc;..\Devices\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

@@ -1,7 +1,7 @@
 # 项目结构审计（Harness Engineering）— 2026-10-19
 
 > 范围：S2 迁移后的全仓结构、文档、构建配置、git 状态、冗余/占位。  
-> 结论：**骨架符合 harness engineering，可作为长期基线**；剩余问题集中在 **Keil include/VSCode 配置、CubeMX 工作流、K 来源**，其中前两项等你回答 TODO-02。
+> 结论：**骨架符合 harness engineering，可作为长期基线**；剩余问题集中在 **VSCode 配置、CubeMX 工作流、K 来源**；Keil include 清理已完成，待 Build 复验。
 
 ## 1. 当前结构
 
@@ -39,10 +39,10 @@ LG-AI-process/
 
 | # | 优先级 | 问题 | 影响 | 动作 |
 |---|---|---|---|---|
-| F1 | P0 | `uvprojx` 34 个 include 中 19 个不存在（旧按设备分目录） | 工程有误导性配置；Build 目前仍通过 | 待你确认后删除 19 条、备份、Build 验证（TODO-02） |
+| F1 | P0 | `uvprojx` include 旧布局（34 个中 19 个不存在） | 工程有误导性配置 | ✅ 2026-10-19 已删 19 条、剩 15 条；备份 `archive/legacy/config-backups/`；**待 Build 复验** |
 | F2 | P0 | `MDK-ARM/.vscode/c_cpp_properties.json` 指向 `d:\RM\27-transistor-codes\...` | IntelliSense 失效/误导 | 待确认是否用 VSCode：重生成或归档 |
 | F3 | P0 | K 来源未定（三份候选） | 调参不可复现 | 建了 `docs/03-theory/k-matrix.md` 草案；TODO-01 |
-| F4 | P1 | CubeMX 重新生成 `uvprojx` 的流程未定义 | 手工 include 修复可能被覆盖 | 待你回答：重生成还是只生成代码手动合并 |
+| F4 | P1 | CubeMX 重新生成 `uvprojx` 的流程未定义 | 手工 include 修复可能被覆盖 | ✅ 用户选择 **B：只在副本生成、手动合并**；不覆盖当前工程（TODO-02） |
 | F5 | P1 | `can-protocol.md`、`state-machine.md` 未建 | 云台联调/状态验收缺单一来源 | S4/TODO-05；`system.md` 暂含状态表 |
 | F6 | P1 | `hardware-overview.md` 仍是旧车描述 | 硬件文档不新 | 待新车参数/结构补齐 |
 | F7 | P2 | `tests/` 仅占位、无 CI | 回归依赖人工 | 已加 `tests/README.md`；CI 以后 |
@@ -76,11 +76,12 @@ LG-AI-process/
 - 新增 [`tests/README.md`](../../tests/README.md) 占位；
 - `.gitignore` 补 `*.htm`/`*.build_log.htm`/`*.slxc`/`MathWorks/graphicsState.bin`/`.claude/`；
 - 删除 Keil 生成的 `LegWheel.htm`、`LegWheel.build_log.htm`（Build 可再生成）；
-- 更新 README/AGENTS/build/TODO-02/roadmap/open-questions 的编译状态与路径。
+- 更新 README/AGENTS/build/TODO-02/roadmap/open-questions 的编译状态与路径；
+- **Keil include 清理**：34 → 15（删除 19 条失效），备份 `archive/legacy/config-backups/LegWheel.uvprojx-20261019.bak`，静态检查 0 missing；待 Build 复验。
 
 ## 6. 下一步
 
-1. **你回答 TODO-02 的 6 个问题**（见 `docs/00-plan/todo/02-build-entry.md`），我再动 `uvprojx`；
+1. **你 Build 复验 include 清理**；并回答 VSCode/IntelliSense、烧录方式、`compile_flags` 三项（TODO-02）；
 2. 之后做 **TODO-01（K 三份差异）**；
 3. P1 文档（can-protocol/state-machine/hardware-overview）等有数据再写；
 4. CI/测试框架等有需要再开。

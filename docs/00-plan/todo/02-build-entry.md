@@ -1,6 +1,6 @@
 # TODO-02 · 构建入口与工具链（Keil / CubeMX / CMake）
 
-> 状态：🔎 部分确认（**Keil Build 已验证 2026-10-19**；剩 include 清理/VSCode/CubeMX 工作流/烧录）　优先级：P0　负责人：你 + AI  
+> 状态：🟡 include 已清理（**待你 Build 复验**）；VSCode/CubeMX 部分确认　优先级：P0　负责人：你 + AI  
 > 对应：`open-questions.md` P0-3、C1、C2、C3、C4、C5、C6  
 > 关联：[`docs/02-architecture/build-and-flash.md`](../../02-architecture/build-and-flash.md)
 
@@ -44,7 +44,7 @@
 | 工程 | `MDK-ARM/LegWheel.uvprojx`；`CreateHexFile=1`；hex 494,095 B / 10-18 |
 | `.ioc` 漂移 | `LegWheel.ioc` 2026-08-27 vs `freertos.c` 2026-10-18 |
 | 旧路径（已归档） | `archive/legacy/stale-configs/compile_flags.txt` → `d:\RM-electro-control\...`；`_inc_list.txt` → `D:/Github/...` |
-| Keil include 目录 | 34 个：**15 存在 / 19 不存在**（旧“按设备分目录”布局）；`<FilePath>` 114 个全部存在 | 2026-10-19 审计 |
+| Keil include 目录 | **34 → 15**：已删除 19 条失效（2026-10-19）；静态检查 0 missing；待你的 Build 复验 | 备份 `archive/legacy/config-backups/LegWheel.uvprojx-20261019.bak` |
 | Keil Build | ✅ **用户确认可正常编译（2026-10-19）** | 用户口述 |
 | `build/` | 2026-10-02 的 CMake 产物；Tier A 已删；可在 S0 快照中恢复（5 MB），但 cache 指向已不存在的 `C:/Program Files/toolchain/...`、`C:/msys64` |
 
@@ -67,9 +67,9 @@
 
 ### 6.1 需要你确认（阻塞我动手）
 
-1. **允许直接改 `uvprojx` 吗？** 计划：备份 `LegWheel.uvprojx.bak-20261019` → 只删 19 条失效 include（保留 15 条）→ 你 Build 一次验证；失败则回退备份。
-2. **CubeMX 工作流**：以后加通信口时，是 (A) CubeMX 重新生成 Keil 工程（可能覆盖 `uvprojx`），还是 (B) 只生成代码、手动合并？如果是 A，我改成“生成后补丁脚本”，不直接改工程。
-3. **VSCode/IntelliSense 用不用？** 用 → 我重生成 `.vscode/c_cpp_properties.json`（需要知道 VSCode 打开的是 `firmware/LegWheel`、`MDK-ARM` 还是仓库根）；不用 → 归档/删除这份旧配置。
+1. **✅ 允许直接改 `uvprojx`**：已备份 `archive/legacy/config-backups/LegWheel.uvprojx-20261019.bak`，删除 19 条失效 include（保留 15 条）；**待你关闭/重开 Keil 后 Build 复验**；失败则回退备份。
+2. **✅ CubeMX 工作流选 B**：只在副本上生成代码，手动合并；**不直接用 CubeMX 覆盖当前 `uvprojx`/工程**。这样 include 路径手改不会被覆盖。
+3. **VSCode/IntelliSense 用不用？** 用 → 我重生成 `.vscode/c_cpp_properties.json`（需要知道你 VSCode 打开的是 `firmware/LegWheel`、`MDK-ARM` 还是仓库根）；不用 → 归档/删除这份旧配置。
 4. **`compile_flags.txt`/`_inc_list.txt` 是否重生成**（给 clangd/IntelliSense）？还是保持归档？
 5. **烧录方式**：DAPLink 无线 / ST-Link / JLink？不影响 include 清理，但 TODO-02 闭环需要。
 6. **编译器确认**：工程实际是 ARMCLANG 6.19；以后是否只维护 ARMCLANG（不再管 ARMCC 5.06）？
@@ -111,3 +111,4 @@
 - 2026-10-19：用户确认 CubeMX 保留（板级初始化/后续通信口），工具安装根 `C:\STM32+Vscode+Keil5` 只读；本机检查到 Keil 5.38 / CubeMX 6.17 / VSCode 1.142 / ARM GCC 15.3，CMake 未找到；H7 固件包缺失。
 - 2026-10-19 后续：用户确认 CMake 可能是理解错，`build/` 删除即可、不恢复；当前按 Keil + CubeMX 记录。
 - 2026-10-19：**用户确认 Keil 可正常编译**；工程实际编译器 ARMCLANG 6.19；34 个 include 中 19 个失效（Build 不受影响）。
+- 2026-10-19：用户允许改 `uvprojx`；CubeMX 工作流选 **B（只生成代码、手动合并）**。已备份并删除 19 条失效 include，剩 15 条；待 Build 复验。

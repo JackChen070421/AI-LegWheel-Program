@@ -109,9 +109,9 @@
 |---|---|---|---|---|---|
 | C1 | 唯一构建入口：Keil / CMake / 两者？ | 换机/CI/回退 | 见 P0-3 | P0 | ✅ Keil+CubeMX；Build 已验证（2026-10-19） |
 | C2 | 工具链版本与安装路径？（已查：MDK 5.38 / ARMCLANG 6.19 / CubeMX >6.17 / VSCode 1.142 / ARM GCC 15.3；CMake 未安装） | 可复现 | 安装根 `C:\STM32+Vscode+Keil5`（只读）；`archive/legacy/stale-configs/` | P0 | ✅ 版本已记录；Build 通过 |
-| C3 | `.ioc` 是否还用于 CubeMX 重新生成？如何保护用户代码？ | 重新生成会覆盖 `freertos.c` | `.ioc` 08-27 vs `freertos.c` 10-18 | P0 | 🔎 CubeMX 保留；H7 包缺失；不要直接重生成 |
+| C3 | `.ioc` 是否还用于 CubeMX 重新生成？如何保护用户代码？ | 重新生成会覆盖 `freertos.c` | `.ioc` 08-27 vs `freertos.c` 10-18 | P0 | 🟡 选 B：副本生成、手动合并；H7 包缺失 |
 | C4 | 烧录方式：DAPLink 无线 / ST-Link / JLink？有无脚本/步骤？ | 上手/复现 | `Daplink/README.md` | P1 | ⬜ |
-| C5 | 旧绝对路径（`D:/Github`、`d:/RM-electro-control`）是否要修？还是只记录？ | 换机编译 | `archive/legacy/stale-configs/{compile_flags.txt,_inc_list.txt}`；Keil 34 include 中 19 个失效 | P1 | ⬜ |
+| C5 | 旧绝对路径（`D:/Github`、`d:/RM-electro-control`）是否要修？还是只记录？ | 换机编译 | `archive/legacy/stale-configs/{compile_flags.txt,_inc_list.txt}`；34 include 已清 19 条，剩 15 | P1 | 🟡 待 Build 复验；VSCode 配置待定 |
 | C6 | `build/` CMake 产物是否保留/可信？ | 清理 | 2026-10-02 停更 | P2 | ⬜ |
 | C7 | VOFA：13 路数据、115200、上位机配置在哪？ | 调试/实验记录 | `vofa.c`、`freertos.c` | P1 | ⬜ |
 | C8 | 编译警告等级、静态分析（clang-tidy/cppcheck）是否要做？ | 质量门 | 无 | P2 | ⬜ |

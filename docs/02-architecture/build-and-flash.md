@@ -1,7 +1,7 @@
 # 构建与烧录（Build & Flash）
 
-> 最后更新：2026-10-19（Keil Build 已验证）  
-> 状态：**Keil + CubeMX 为当前事实工作流**；CMake 未安装/不启用（用户 2026-10-19）；烧录步骤待确认（C4）。  
+> 最后更新：2026-10-19（include 清理，待 Build 复验）  
+> 状态：**Keil + CubeMX 为当前事实工作流**；Keil Build 已验证；include 已清理待复验；CMake 未安装/不启用；烧录步骤待确认（C4）。  
 > 安装根 `C:\STM32+Vscode+Keil5` **只读**：只浏览/读版本，不修改、不移动、不写（AGENTS.md 黄金原则 9）。
 
 ## 1. 本机工具链（2026-10-19 只读检查）
@@ -33,12 +33,12 @@
 | Build 验证 | ✅ 2026-10-19 用户确认 Keil 可正常编译 |
 | 烧录 | DAPLink 无线 / ST-Link（步骤 TBD，C4） |
 
-### Keil include 路径（2026-10-19 检查）
+### Keil include 路径（2026-10-19 清理）
 
-- `uvprojx` 共 34 个 include 目录：**15 个存在、19 个不存在**；
-- 19 个缺失目录都是旧“按设备分目录”布局，当前头文件统一在 `Devices/inc`、`Bsp/inc` 等，Build 已通过说明不影响编译；
-- 缺失列表：`../Devices/{WS2812,IBUS,IMU,Saber_C3,M1505B,SBUS,M6020,DM8009P,M3508,tpid,VOFA+,N100,dji_motor,GM6020,M2006,XRobot_IMU}`、`../Bsp/{UART,DWT}`、`..\Devices\SDM02`；
-- 修复计划：删除这 19 条（保留 15 条有效）；需用户确认 CubeMX 是否可能重新生成 `uvprojx`（TODO-02）。
+- 清理前：34 个 include，15 存在 / 19 不存在（旧“按设备分目录”布局）；
+- 已删除 19 条失效项，保留 15 条；静态检查 **0 missing**；备份 `archive/legacy/config-backups/LegWheel.uvprojx-20261019.bak`；
+- 原配置 Build 已验证；清理后 **待你关闭/重开 Keil 再 Build 复验**（删除的目录不影响头文件查找，风险低）；
+- 若复验失败：用备份覆盖 `uvprojx` 或 `git checkout` 回退。
 
 ### 构建步骤（已由用户验证）
 
@@ -56,6 +56,7 @@
 - 版本 >6.17.0-RC5；`.ioc`、`.mxproject` 保留；
 - **本机 CubeMX 只有 F1 固件包**；H7 固件包缺失。若要用 CubeMX 重新配 H7，需要先安装 `STM32Cube_FW_H7`（你操作，安装目录只读）；
 - `.ioc` 停在 2026-08-27，`freertos.c` 已改到 2026-10-18；**不要直接重新生成**，会覆盖用户代码。若必须用：先在副本上生成，再人工合并，并记录到 CHANGELOG；
+- **CubeMX 工作流（用户 2026-10-19 选择 B）**：只在**副本**上生成代码，再人工合并到当前工程；**不直接用 CubeMX 覆盖当前 `uvprojx`/工程**。流程：复制 `.ioc`/工程到临时目录 → 生成 → diff `Core/` → 人工合并 → Build → 提交；
 - CubeMX 生成工程类型（Keil/CMake）与“是否还在用 CubeMX 改外设”待确认（C3）。
 
 ## 4. CMake（现状：未找到，不可复现）
@@ -68,7 +69,7 @@
 | 工程根**没有** `CMakeLists.txt` | 全仓库只在 CMSIS/DSP 厂商目录有 |
 | `compile_flags.txt` 原指向 `d:\RM-electro-control\...` | 已归档 `archive/legacy/stale-configs/compile_flags.txt`（2026-10-19，路径失效） |
 | `_inc_list.txt` 原指向 `D:/Github/Transistor-Wheeled-Legged-Robot/software` | 已归档 `archive/legacy/stale-configs/_inc_list.txt`（2026-10-19，路径失效） |
-| Keil `uvprojx` 的 114 个 `<FilePath>` 都存在，但 **19 个 include 目录不存在** | 2026-10-19 迁移审计（旧“按设备分目录”布局）；编译前需修 include 路径（TODO-02/C5） |
+| Keil `uvprojx` 的 114 个 `<FilePath>` 都存在；**19 个失效 include 已于 2026-10-19 删除**，剩 15 条，待 Build 复验 | 2026-10-19 清理（备份在 `archive/legacy/config-backups/`） |
 
 结论：**CMake 未安装/不启用**；`LegWheel/build/` 已在 Tier A 删除，用户 2026-10-19 确认**删除即可、不恢复**。当前以 Keil + CubeMX 为准；如果以后真的要用 CMake/CLion，再单独开任务（安装 + 重建顶层 `CMakeLists.txt` + toolchain）。
 
@@ -101,8 +102,8 @@
 1. 日常是直接开 Keil，还是 VSCode/Keil Assistant 触发 UV4？（编译器已确认 ARMCLANG V6.19）
 2. 烧录用 DAPLink 无线还是 ST-Link？步骤？
 3. **CMake 已澄清（2026-10-19）**：可能是理解错；`build/` 删除即可、不恢复；CMake 未安装/不启用。以后真要用再单独开任务。
-4. **CubeMX 工作流**：以后加通信口时，是 CubeMX 重新生成 Keil 工程（可能覆盖 `uvprojx`），还是只生成代码、手动合并？这决定 include 路径修复是否会被覆盖。
-5. 是否允许删除 `uvprojx` 里 19 条失效 include 目录（保留 15 条有效），改前备份、改后你 Build 验证？
+4. **CubeMX 工作流已选 B（2026-10-19）**：只在副本生成代码、手动合并；不直接覆盖当前工程。
+5. **include 清理已完成**：19 条失效项已删除，剩 15 条；待你 Build 复验。
 6. 是否使用 VSCode IntelliSense？如果不用，归档/删除 `.vscode/c_cpp_properties.json`、`compile_flags.txt`、`_inc_list.txt`；如果用，按当前路径重生成（需知道你打开哪个目录）。
 
 > 以上未确认前，不改构建配置；只记录。见 [TODO-02](../00-plan/todo/02-build-entry.md)。
