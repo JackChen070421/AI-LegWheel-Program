@@ -1,0 +1,49 @@
+# Agent / runtime
+.agent-teams/
+
+# Build / generated (Keil, CMake, MATLAB)
+**/build/
+**/slprj/
+**/*.uvguix.*
+**/tmp/
+**/RTE/
+**/*.hex
+**/*.elf
+**/*.bin
+**/*.o
+**/*.d
+**/*.crf
+**/*.dep
+**/*.axf
+**/*.map
+**/*.lst
+**/*.lnp
+**/__pycache__/
+**/*.log
+**/uv4.log*
+**/*.lock
+
+# Large vendor/reference trees (index in docs/09-references)
+# S0 在迁移前提交：规则必须同时命中 codes-chassis/... 与 firmware/...
+researchs/
+**/Drivers/CMSIS/DSP/*
+!**/Drivers/CMSIS/DSP/Lib/
+**/Drivers/CMSIS/DSP/Lib/*
+!**/Drivers/CMSIS/DSP/Lib/ARM/
+**/Drivers/CMSIS/DSP/Lib/ARM/*
+!**/Drivers/CMSIS/DSP/Lib/ARM/arm_cortexM7lfdp_math.lib
+**/Drivers/CMSIS/NN/
+**/Drivers/CMSIS/Core_A/
+**/Drivers/CMSIS/docs/
+**/Drivers/CMSIS/DSP_Lib_TestSuite/
+
+# Experiment data (large)
+experiments/logs/*.csv
+experiments/logs/*.bin
+
+# Snapshots / trash (keep the manifest, not the copies)
+archive/snapshots/
+archive/trash-*/
+
+# Keep the known-good Keil artifact in the baseline
+!archive/legacy/hex-2026-10-18/*.hex
