@@ -1,17 +1,6 @@
-# simulation/chassis-lqr — 底盘 LQR 仿真（待迁入）
+# 底盘 LQR 仿真（chassis-lqr）
 
-> S2 会把 `codes-chassis/轮腿底盘LQR仿真/simulation/` 的内容迁到这里。
+> 2026-10-19 从 `codes-chassis/轮腿底盘LQR仿真/simulation/` 迁入（S2）；以下为原 README。
 
-## 当前源位置
-
-`codes-chassis/轮腿底盘LQR仿真/simulation/`
-
-## 关键脚本
-
-`k_calc_chuan_real2.m`、`Variables_and_Equations.m`、`Linear_and_CalcMatrix.m`、`Num_function.m`、`Calc_K_and_fit.m`、`Leg_data.m`、`leg_fk.m`、`leg_ik.m`、`verify_leg_kinematics.m`。
-
-## 注意
-
-- 旧链/新链并存，K 来源未定（P0-1/2）；
-- 迁移后相对 `load` 路径要保持可用；
-- 迁移验证：至少一个不依赖硬件的 `.m` 能跑。
+这一部分我还没来得及细看，应该是为了算底盘LQR增益K矩阵的MATLAB脚本。  
+接下来的工作中，如果需要，我希望你能够使用MATLAB仿真。如果比较困难，告诉我，我来操作。

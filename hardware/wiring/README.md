@@ -2,7 +2,7 @@
 
 放：供电链路、CAN1/2/3、USART、SWD、接插件定义、线束照片/标签。
 
-当前（来自 `STRUCTURES.md`，待核对）：
+当前（来自 [`../../docs/02-architecture/hardware-overview.md`](../../docs/02-architecture/hardware-overview.md)，待核对）：
 
 - 电池 → 继电器 → 一分二分电板；
 - 一路 → 一分四 → 4 关节；

@@ -25,7 +25,7 @@
 ## 决定
 
 1. 采用 **C 混合结构**：
-   - `firmware/LegWheel/`、`simulation/chassis-lqr/` 作为目标位置，**S2 才迁移**；
+   - `firmware/LegWheel/`、`simulation/chassis-lqr/` 作为目标位置，**已于 S2（2026-10-19）迁移**；
    - `researchs/` 原地保留，只建索引（`docs/09-references/index.md`）；
    - 新增 `docs/00–09`、`hardware/`、`experiments/`、`tools/`、`archive/`。
 2. **文本-only git + 全量 tar 快照**：
@@ -39,7 +39,7 @@
 ## 后果
 
 - 仓库轻、回退快；研究资料仍可查；
-- S2 迁移是下一步风险点，需要 Keil 验证 + manifest 前后对比；
+- S2 已完成（2026-10-19）：manifest 前后对比 0 缺失；待 Keil 打开/编译验证；剩余风险是 `.ioc` 漂移与旧绝对路径。
 - 旧车基线缺失，参数表只能从当前代码/仿真/实测建立（已标 TBD）；
 - Tier B 占磁盘；D 盘剩约 15 GB，暂不移动。
 

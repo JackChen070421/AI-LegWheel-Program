@@ -49,7 +49,7 @@
 | 轮电机 | 2 × M3508 + C620 | `Chassis.h`、`Devices/` | ⬜ | 19:1？电流/力矩换算待确认 |
 | 遥控 | SBUS/ET16S | `Devices/SBUS.*` | ✅ | 通道映射待记录 |
 | 调试遥测 | VOFA 13 路 / 115200 | `vofa.c`、`freertos.c` | ✅ | 字段定义待补 |
-| 供电 | 电池→继电器→分电板 | `STRUCTURES.md` | ⬜ | 电压/电流/保险待记录 |
+| 供电 | 电池→继电器→分电板 | [`../02-architecture/hardware-overview.md`](../02-architecture/hardware-overview.md) | ⬜ | 电压/电流/保险待记录 |
 
 ## 5. 下一步
 

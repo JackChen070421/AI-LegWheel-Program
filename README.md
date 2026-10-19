@@ -1,6 +1,6 @@
 # 轮腿平衡步兵（RoboMaster）— 项目总览
 
-> 项目根：`D:\RM\LG-AI-process`　最后更新：2026-10-19（S1 结构骨架）  
+> 项目根：`D:\RM\LG-AI-process`　最后更新：2026-10-19（S2 迁移完成）  
 > 给 AI/新同学：先读 [`AGENTS.md`](AGENTS.md)；参数以 [`docs/04-parameters/parameters.md`](docs/04-parameters/parameters.md) 为准。
 
 ## 1. 一句话
@@ -27,7 +27,7 @@ RoboMaster 轮腿平衡步兵：两条腿 + 两个驱动轮，靠 LQR/VMC 保持
 | 供电 | 电池 → 继电器 → 分电板 | 调试期继电器用于安全 |
 | 重量 | 底盘总重 **14.3 kg**；单轮 **0.55 kg** | 用户 2026-10-19 口述；其余待测 |
 
-> 结构/接线旧描述仍在 [`STRUCTURES.md`](STRUCTURES.md)；后续会迁入 `docs/02-architecture/`。
+> 结构/接线旧描述已迁入 [`docs/02-architecture/hardware-overview.md`](docs/02-architecture/hardware-overview.md)。
 
 ## 4. 软件结构（摘要）
 
@@ -43,7 +43,7 @@ RoboMaster 轮腿平衡步兵：两条腿 + 两个驱动轮，靠 LQR/VMC 保持
 
 > 本机工具（2026-10-19 只读检查）：Keil MDK 5.38 + STM32CubeMX >6.17 + VS Code 1.142 + ARM GNU GCC 15.3；安装根 `C:\STM32+Vscode+Keil5`（**只读**）。CMake 未安装/不启用；`build/` 已删（删除即可，不恢复）。CubeMX 用于板级初始化、保留 `.ioc`；不要直接重新生成。
 
-1. 打开 `codes-chassis/轮腿底盘控制代码/LegWheel/MDK-ARM/LegWheel.uvprojx`（S2 后迁到 `firmware/LegWheel/`）；
+1. 打开 `firmware/LegWheel/MDK-ARM/LegWheel.uvprojx`；
 2. Build；产物在 `MDK-ARM/LegWheel/LegWheel.hex`（S0 已留档 494,095 B）；
 3. 烧录：DAPLink 无线 / ST-Link（具体步骤待补，见 build 文档）。
 
@@ -54,21 +54,22 @@ RoboMaster 轮腿平衡步兵：两条腿 + 两个驱动轮，靠 LQR/VMC 保持
 
 ### 仿真（MATLAB）
 
-当前在 `codes-chassis/轮腿底盘LQR仿真/simulation/`（S2 后迁到 `simulation/chassis-lqr/`）。LQR 链路与三份 K 候选见 [TODO-01](docs/00-plan/todo/01-k-matrix.md)。
+当前在 `simulation/chassis-lqr/`。LQR 链路与三份 K 候选见 [TODO-01](docs/00-plan/todo/01-k-matrix.md)。
 
 ### 调试观测
 
 VOFA 13 路、115200（以代码为准）；日志/标定以后放 `experiments/`。
 
-## 6. 目录导航（当前 → S2 后）
+## 6. 目录导航（S2 已完成）
 
-| 当前 | S2 后 | 内容 |
-|---|---|---|
-| `codes-chassis/轮腿底盘控制代码/LegWheel/` | `firmware/LegWheel/` | 底盘固件（Keil） |
-| `codes-chassis/轮腿底盘LQR仿真/` | `simulation/chassis-lqr/` | MATLAB/Simulink |
-| `researchs/` | `researchs/`（原地） | 外部参考/厂商资料（只读） |
-| `docs/` | `docs/` | 文档中心（00–09） |
-| `hardware/`、`experiments/`、`tools/`、`archive/` | 同左 | 新建/预留 |
+| 路径 | 内容 |
+|---|---|
+| `firmware/LegWheel/` | 底盘固件（Keil 工程） |
+| `firmware/gimbal/` | 云台固件（预留） |
+| `simulation/chassis-lqr/` | MATLAB/Simulink LQR 链路 |
+| `researchs/` | 外部参考/厂商资料（只读，原地） |
+| `docs/` | 文档中心（00–09） |
+| `hardware/`、`experiments/`、`tools/`、`archive/` | 硬件/实验/工具/快照（新建/预留） |
 
 ## 7. 文档地图
 

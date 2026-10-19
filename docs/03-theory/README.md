@@ -17,7 +17,7 @@
 - 上海交大交龙开源：`researchs/codes/上海交大开源/WBR_modeling.html`、`WBR_leg.html`、`WBR_control.html`（正文可抽，公式多为内嵌图片，agent 不能直接读图）；
 - 知乎原理文章：`researchs/papers/`（PDF 可读，图片未 OCR）；
 - 浙大串联腿 PDF（`researchs/papers/设计参考：串联退机器人建模与控制开源文档/`）——与当前串联腿实现最接近；
-- 代码：`firmware（当前 codes-chassis/.../LegWheel）Algorithm/` 的 `lqr.*`、`vmc.*`、`leso.*`、`lqr_coeffs.cpp`。
+- 代码：`firmware/LegWheel/Algorithm/` 的 `lqr.*`、`vmc.*`、`leso.*`、`lqr_coeffs.cpp`。
 
 ## 规则
 

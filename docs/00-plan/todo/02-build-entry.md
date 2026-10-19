@@ -10,7 +10,7 @@
 2. 工具链版本、路径、烧录步骤？
 3. **CubeMX 保留怎么用**：后续加通信口时怎么改 `.ioc` 而不覆盖用户代码？
 4. `build/`（CMake 产物）是否需要恢复？
-5. 旧绝对路径（`compile_flags.txt`、`_inc_list.txt`）是否要修？
+5. 旧绝对路径（`compile_flags.txt`、`_inc_list.txt`，已归档到 `archive/legacy/stale-configs/`）是否要重生成/放回？
 
 ## 2. 为什么现在要解决
 
@@ -25,7 +25,7 @@
 - 工具安装根：`C:\STM32+Vscode+Keil5`；
 - **agent 只读**：不要修改安装路径，只能浏览（已写入 AGENTS.md 黄金原则 9）；
 - 关于 “CMake”：你的表述是“CubeMX 设置开发板初始化的时候用的”；实际检查**未在本机找到 cmake.exe**（详见 §4）。
-- **2026-10-19 后续澄清**：你确认可能是理解错了，`LegWheel/build/` **删除即可，不恢复**；CubeMX 仍保留。当前工作流按 **Keil 编译/烧录 + CubeMX 板级初始化** 记录；CMake 记为“未安装/不启用”，以后真要用再单独开任务。
+- **2026-10-19 后续澄清**：你确认可能是理解错了，`firmware/LegWheel/build/` **删除即可，不恢复**；CubeMX 仍保留。当前工作流按 **Keil 编译/烧录 + CubeMX 板级初始化** 记录；CMake 记为“未安装/不启用”，以后真要用再单独开任务。
 
 ## 4. 目前已知（2026-10-19 只读检查）
 
@@ -43,7 +43,8 @@
 | CubeMX 固件包 | 本机只有 `STM32Cube_FW_F1_V1.8.7`；**H7 包缺失** |
 | 工程 | `MDK-ARM/LegWheel.uvprojx`；`CreateHexFile=1`；hex 494,095 B / 10-18 |
 | `.ioc` 漂移 | `LegWheel.ioc` 2026-08-27 vs `freertos.c` 2026-10-18 |
-| 旧路径 | `compile_flags.txt` → `d:\RM-electro-control\...`；`_inc_list.txt` → `D:/Github/...` |
+| 旧路径（已归档） | `archive/legacy/stale-configs/compile_flags.txt` → `d:\RM-electro-control\...`；`_inc_list.txt` → `D:/Github/...` |
+| Keil include 目录 | 114 个 `<FilePath>` 全部存在，但 **19 个 include 目录不存在**（旧“按设备分目录”布局） | 2026-10-19 迁移审计 |
 | `build/` | 2026-10-02 的 CMake 产物；Tier A 已删；可在 S0 快照中恢复（5 MB），但 cache 指向已不存在的 `C:/Program Files/toolchain/...`、`C:/msys64` |
 
 ## 5. 可选方案
@@ -53,15 +54,15 @@
 | **A. Keil 编译 + CubeMX 管初始化**（推荐） | Keil UV4 编译/烧录；CubeMX 只改 `.ioc` 的板级/外设，生成后在副本上人工合并；CMake 暂不使用 | 换机需装 Keil + H7 DFP；CubeMX 需 H7 固件包；要严格“副本生成”纪律 |
 | **B. 只用 Keil** | 不动 CubeMX；新通信口手工改 `Core/` 初始化 | 最稳；但改外设易错，后续维护差 |
 | **C. CMake/CLion** | 安装 CMake，重建顶层 `CMakeLists.txt` + toolchain | 本机无 CMake；工作量大；需与 Keil 验证 hex 一致 |
-| **D. 恢复 build/** | 从 S0 快照恢复 `LegWheel/build/` | **用户 2026-10-19 确认不需要**：删除即可，不恢复 |
+| **D. 恢复 build/** | 从 S0 快照恢复 `firmware/LegWheel/build/` | **用户 2026-10-19 确认不需要**：删除即可，不恢复 |
 
 ## 6. 要回答它，需要做什么
 
 1. 确认：日常是 **VSCode + Keil Assistant 触发 UV4**，还是直接开 Keil？工程实际用 ARMCC 5.06 还是 ARMCLANG 16？
 2. 确认烧录方式（DAPLink 无线 / ST-Link / JLink）与步骤；
-3. **CMake 已澄清（2026-10-19）**：可能是理解错；`LegWheel/build/` 删除即可、不恢复；CMake 未安装/不启用。以后真要用再单独开任务。
+3. **CMake 已澄清（2026-10-19）**：可能是理解错；`firmware/LegWheel/build/` 删除即可、不恢复；CMake 未安装/不启用。以后真要用再单独开任务。
 4. 若继续用 CubeMX 改 H7 外设：需要安装 **STM32Cube_FW_H7**（你操作；安装目录只读）；并约定“先复制 `.ioc`/工程到临时目录生成，再人工合并”的流程。
-5. 决定是否修 `compile_flags.txt`/`_inc_list.txt`（或只记录、不改）。
+5. 决定是否修 `archive/legacy/stale-configs/compile_flags.txt`/`_inc_list.txt`（或只记录、不改），以及是否修 Keil 的 19 个失效 include 目录。
 
 ## 7. 解决后的落地动作
 

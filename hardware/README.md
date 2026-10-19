@@ -9,4 +9,4 @@
 | `wiring/` | 线束、CAN/UART/电源、接插件、照片 |
 | `bom/` | 物料清单、供应商、价格、交期 |
 
-当前状态：底盘装完、布线完成；气弹簧/云台未装。旧描述见 [`../STRUCTURES.md`](../STRUCTURES.md)（后续迁入）。
+当前状态：底盘装完、布线完成；气弹簧/云台未装。旧描述见 [`../docs/02-architecture/hardware-overview.md`](../docs/02-architecture/hardware-overview.md)（2026-10-19 从根目录迁入，待更新）。

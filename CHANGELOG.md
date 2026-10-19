@@ -199,3 +199,39 @@
 - `LegWheel/build/`（CMake 生成物）已在 Tier A 删除；如需恢复，可从 S0 快照取（约 5 MB），但 cache 路径已失效；
 - 更新 `AGENTS.md`（黄金原则 9 + 工具链）、`docs/02-architecture/build-and-flash.md`、`docs/00-plan/todo/02-build-entry.md`、`open-questions.md`、`README.md`；
 - 未改代码/构建配置。
+
+---
+
+## 2026-10-19 — S2 代码/仿真迁移
+
+### 移动
+
+- `codes-chassis/轮腿底盘控制代码/LegWheel/` → `firmware/LegWheel/`（含原 README）
+- `codes-chassis/轮腿底盘LQR仿真/simulation/*` → `simulation/chassis-lqr/`（含原 README）
+- `STRUCTURES.md` → `docs/02-architecture/hardware-overview.md`
+- 删除空壳 `codes-chassis/`
+
+### 验证
+
+- pre/post manifest：7,092 → 7,091 行；映射后 **missing=0**；changed=1（`simulation/chassis-lqr/README.md` 占位被源 README 覆盖，预期）；
+- `firmware/LegWheel/MDK-ARM/LegWheel/LegWheel.hex` 494,095 B；`archive/legacy/...` SHA-256 `c41529…1dd9ce`；
+- 文档路径引用已更新（README/AGENTS/build-and-flash/system/roadmap 等）；
+- 多智能体审计：t6 PASS、t7 PASS、t8 PASS（0 findings）；报告 `docs/00-plan/supervisor-review-s2.md`；
+- 清理 7 项 / 28,087 B：`.slxc`、`MathWorks`、`.claude` 删除；K 头、`compile_flags.txt`、`_inc_list.txt`、`dji_motor.h` 移入 `archive/legacy/`；
+- 清理后 final manifest：7,089 行 / 1,407,786,484 B；
+- **Keil 风险**：114 个 `<FilePath>` 存在，但 19 个 include 目录失效（待修）。
+
+### 未做
+
+- git commit/tag（下一步立即做）；
+- Keil 打开/编译验证（需要你或后续任务）；
+- Tier B 未删。
+
+### 记录
+
+- `archive/manifests/pre-s2-manifest-20261019.csv`
+- `archive/manifests/post-s2-manifest-20261019.csv`
+- `archive/manifests/final-s2-manifest-20261019.csv`
+- `archive/manifests/S2-CLEANUP-20261019.csv`
+- `archive/manifests/S2-MIGRATION-20261019.md`
+- `docs/00-plan/supervisor-review-s2.md`

@@ -1,7 +1,7 @@
 # 系统结构（硬件 / 软件 / 控制 / 通信）
 
 > 最后更新：2026-10-19（S1）  
-> 事实源：`firmware（当前 codes-chassis/.../LegWheel）` 代码 + `STRUCTURES.md` + 用户口述。  
+> 事实源：`firmware/LegWheel/` 代码 + [`hardware-overview.md`](./hardware-overview.md) + 用户口述。  
 > 参数数值见 [`../04-parameters/parameters.md`](../04-parameters/parameters.md)；未确认项见 [`../00-plan/open-questions.md`](../00-plan/open-questions.md)。
 
 ## 1. 硬件拓扑
@@ -14,10 +14,10 @@
 | IMU | 固件支持 DM IMU / N100 | `ins.h` `INS_IMU_SOURCE`；实车待确认 |
 | 遥控 | SBUS 接收机（ET16S） | `Devices/SBUS.*`、`freertos.c` `StartET16STask` |
 | 无线烧录 | DAPLink（塔克） | `researchs/hardwares/Daplink/` |
-| 供电 | 电池 → 继电器 → 分电板 → 电机/板2 | `STRUCTURES.md` |
+| 供电 | 电池 → 继电器 → 分电板 → 电机/板2 | [`hardware-overview.md`](./hardware-overview.md) |
 | 云台（板1） | 未做 | `Cloud.*` 为 yaw/拨盘骨架；`BOARD_COMM_GIMBAL_PRESENT=0` |
 
-接线要点（旧描述，待迁入硬件文档）：
+接线要点（旧描述，已迁入 [`hardware-overview.md`](./hardware-overview.md)）：
 
 - CAN1：4 个关节电机；
 - CAN2：2 个轮电机；预留云台 yaw / 供弹拨盘；
@@ -87,7 +87,7 @@ vTaskDelayUntil() // 1 ms
 | CAN2 | 2 轮 + 预留云台 yaw/拨盘 | 轮电流/云台 | `M3508.*`、`GM6020.*` |
 | CAN3 | 云台板1（未接） | 板间协议 0x10F/0x11F/0x12F/0x14F | `board_comm.h` |
 | USART | IMU / SBUS / VOFA | 姿态/遥控/遥测 | `ins.*`、`SBUS.*`、`vofa.*` |
-| SWD | DAPLink | 烧录/调试 | `STRUCTURES.md` |
+| SWD | DAPLink | 烧录/调试 | [`hardware-overview.md`](./hardware-overview.md) |
 
 `BOARD_PROTOCOL.md` 被 `board_comm.*` 引用但**全仓库不存在**；协议 v0.1 待写（P0-7/D3）。
 

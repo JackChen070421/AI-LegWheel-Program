@@ -1,8 +1,8 @@
 # 项目结构方案（Harness Engineering）— 提案 v0.1
 
 > 日期：2026-10-19  
-> 状态：**提案；S0/S1 已执行（2026-10-19），S2–S4 未执行**。本文不移动、不删除、不改写任何现有文件。  
-> 更新：S0 快照 + git 基线、S1 结构骨架已完成，见 `archive/manifests/S0-BASELINE.md`、`AGENTS.md`；tag `pre-structure-20261019`、`s0-baseline`。
+> 状态：**提案；S0–S2 已执行（2026-10-19），S3 部分，S4 未执行**。本文不移动、不删除、不改写任何现有文件。  
+> 更新：S0 快照 + git 基线、S1 结构骨架、S2 代码/仿真迁移已完成；见 `archive/manifests/S0-BASELINE.md`、`S2-MIGRATION-20261019.md`、`AGENTS.md`；tag `pre-structure-20261019`、`s0-baseline`、`s1-structure-skeleton`。
 > 依据：根目录 `README.md` 的今晚四步；t1（固件/构建）、t2（仿真/资料）、t3（监管审阅）三份简报；Captain 定点复核（`Chassis.cpp:13`、`Chassis.h:52-55`、`vmc.cpp:22-23`、`lqr_coeffs.cpp:6`、`MDK-ARM/LegWheel/LegWheel.hex` 等）。  
 > 约定：**目录/文件名用英文；文档内容用中文；具体资料文件保留中文名**（按你 2026-10-19 的决定）。
 
@@ -146,6 +146,7 @@ LG-AI-process/
 ---
 
 ## 4. 现状 → 目标映射
+> 下表为 S2 执行前的映射记录；**2026-10-19 已按此执行**，当前路径见 `AGENTS.md`/`README.md`。
 
 | 现有路径 | 目标路径 | 动作 | 风险 | 回退 |
 |---|---|---|---|---|
@@ -190,7 +191,7 @@ LG-AI-process/
 7. 重写 `README.md`（大纲见 §9）；旧版先存 `docs/01-product/legacy-readme-2026-10-19.md`。
 8. 提交：`docs: add harness structure skeleton`。
 
-### S2 迁移代码/仿真（预计 30 min，中风险）
+### S2 迁移代码/仿真（预计 30 min，中风险）✅ 2026-10-19 已执行
 1. **先留档唯一 Keil 产物**（防止 `git mv` 不搬未跟踪文件）：
    `Copy-Item codes-chassis\轮腿底盘控制代码\LegWheel\MDK-ARM\LegWheel\LegWheel.hex archive\legacy\hex-2026-10-18\LegWheel.hex`
    记录 SHA-256 与大小（494,095 B）。
@@ -460,7 +461,7 @@ P0 阻塞（参数来源、K 来源、协议、构建入口）先问，不猜。
 
 | 事实 | 证据 |
 |---|---|
-| 轮半径 0.06 m | `firmware（现 codes-chassis/.../LegWheel）/Applications/src/Chassis.cpp:13` |
+| 轮半径 0.06 m | `firmware/LegWheel/Applications/src/Chassis.cpp:13` |
 | 车体 11.058 / 腿 1.067 / 轮距 0.4 | `.../Applications/inc/Chassis.h:52-55` |
 | vmc 轮 0.554 / 腿 0.788 | `.../Algorithm/src/vmc.cpp:22-23` |
 | 14.3 kg 自洽 | 0.554×2 + 1.067×2 + 11.058 = 14.300 |
@@ -478,4 +479,4 @@ P0 阻塞（参数来源、K 来源、协议、构建入口）先问，不猜。
 | 上交 zip 重复 | 407,008,202 B；zip 40 文件 vs 解压 41（含 zip 本身），仅 GBK 文件名差异 |
 | 空目录/0 字节 | `simulation/MathWorks/ServiceHost` 等 7 个；`ARCHITECTURE.md`、`docs/papers.md` 等 3 个 |
 
-> 注：文中 `firmware（现 codes-chassis/...）` 仅表示迁移后的预期路径；当前实际路径以 §4 映射表为准。
+> 注：文中 `firmware/...` 为当前路径；§4 映射表是迁移前的历史记录（S2 已于 2026-10-19 执行）。

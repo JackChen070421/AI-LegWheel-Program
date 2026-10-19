@@ -1,10 +1,10 @@
 # simulation — 仿真
 
-> MATLAB/Simulink 仿真与 LQR 计算链；**S2 后**从 `codes-chassis/轮腿底盘LQR仿真/` 迁入 `chassis-lqr/`。
+> MATLAB/Simulink 仿真与 LQR 计算链；**S2 已迁入** `chassis-lqr/`（2026-10-19）。
 
 | 目录 | 内容 | 状态 |
 |---|---|---|
-| `chassis-lqr/` | 轮腿底盘 LQR 链路（`.m`/`.slx`/`.mat`） | 待迁入 |
+| `chassis-lqr/` | 轮腿底盘 LQR 链路（`.m`/`.slx`/`.mat`） | 已迁入 |
 
 ## 规则
 

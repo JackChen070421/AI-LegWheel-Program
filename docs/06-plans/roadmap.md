@@ -10,8 +10,8 @@
 | S0 | 全量快照 + manifest + git 基线 + tag | ✅ 2026-10-19 | 见 `archive/manifests/S0-BASELINE.md` |
 | Tier A | 删除可再生的构建缓存/重复文件 | ✅ 2026-10-19 | 101 行 / 414 MB；见删除记录 |
 | S1 | 新增目录/文档/AGENTS.md/README 重写 | ✅ 2026-10-19 | 本次提交 |
-| S2 | 迁移 `firmware/LegWheel`、`simulation/chassis-lqr` | ⏳ 待 P0 | 需要 P0-1/2/3/4/5/6/7/10 + 补充 P0 |
-| S3 | 其余清理/Tier B 归档 | ⏳ 部分 | Tier B 不删；空目录已清 |
+| S2 | 迁移 `firmware/LegWheel`、`simulation/chassis-lqr` | ✅ 2026-10-19 | 已执行；见 `archive/manifests/S2-MIGRATION-20261019.md` |
+| S3 | 其余清理/Tier B 归档 | ⏳ 部分 | Tier A 已删；Tier B 不删；空目录已清 |
 | S4 | K 文档/参数台账/ADR/质量门 | ⏳ | 依赖 P0 答案与实测 |
 
 ## B. 产品（底盘）
@@ -32,7 +32,7 @@
 3. 对照三份 K，确定生效来源（TODO-01）；
 4. 写 `can-protocol.md` v0.1 + 状态映射（TODO-05）；
 5. 台架验证：急停、IMU、遥控、电机方向；
-6. 参数/K 确认后，再做 S2 迁移。
+6. S2 已完成；参数/K 确认后再做 S4/调参与实车验证。
 
 ## D. 决策/依赖
 
@@ -40,4 +40,4 @@
 - 远端暂不需要；本地 git + 快照；
 - Tier B 保留；磁盘 D 剩约 15 GB；
 - 构建入口已确认：**Keil 编译/烧录 + CubeMX 板级初始化**；CMake 未安装/不启用（用户 2026-10-19）；
-- K 来源、轮距定义、协议/状态映射仍是 S2 前的硬门槛。
+- K 来源、轮距定义、协议/状态映射仍是 S4/调参与实车验证的硬门槛。

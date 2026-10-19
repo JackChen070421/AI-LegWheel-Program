@@ -1,9 +1,12 @@
 # Agent / runtime
 .agent-teams/
+.claude/
 
 # Build / generated (Keil, CMake, MATLAB)
 **/build/
 **/slprj/
+**/*.slxc
+**/MathWorks/graphicsState.bin
 **/*.uvguix.*
 **/tmp/
 **/RTE/

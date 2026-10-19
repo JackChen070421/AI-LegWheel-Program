@@ -1,7 +1,7 @@
 # AGENTS.md — 轮腿平衡步兵项目
 
 > 本文件是 agent 的**唯一入口**：先读这里，再按“先读什么”进入 `docs/`。  
-> 最后更新：2026-10-19（S1 结构骨架）。项目根：`D:\RM\LG-AI-process`。
+> 最后更新：2026-10-19（S2 代码/仿真迁移）。项目根：`D:\RM\LG-AI-process`。
 
 ## 0. 黄金原则（Golden Principles）
 
@@ -32,9 +32,9 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 
 | 路径 | 内容 | 状态 |
 |---|---|---|
-| `firmware/LegWheel/` | 底盘固件（Keil 工程） | **S2 后迁入**；当前在 `codes-chassis/轮腿底盘控制代码/LegWheel/` |
+| `firmware/LegWheel/` | 底盘固件（Keil 工程） | **已迁入（S2, 2026-10-19）** |
 | `firmware/gimbal/` | 未来云台固件（板1） | 预留 |
-| `simulation/chassis-lqr/` | MATLAB/Simulink LQR 链路 | **S2 后迁入**；当前在 `codes-chassis/轮腿底盘LQR仿真/` |
+| `simulation/chassis-lqr/` | MATLAB/Simulink LQR 链路 | **已迁入（S2, 2026-10-19）** |
 | `docs/` | 所有文档（中文内容，英文目录/文件名） | 已建 00–09 骨架 |
 | `researchs/` | 外部参考/厂商资料（只读） | 原地保留；索引在 `docs/09-references/index.md` |
 | `hardware/` | 我们自己的结构/电气/BOM/接线 | 预留 |
@@ -46,11 +46,11 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 
 - **参数**：`docs/04-parameters/parameters.md`。用户已确认：整车 14.3 kg、单轮 0.55 kg；其余见文档。
 - **K 矩阵**：当前固件读 `lqr_coeffs.cpp`；另有孤儿副本/仿真副本，**来源未定**（P0-1/2，见 TODO-01）。未确认前不要改 K。
-- **构建**：Keil MDK 5.38（UV4；ARMCC 5.06 / ARMCLANG 16）`MDK-ARM/LegWheel.uvprojx`（S2 前在 `codes-chassis/...`）；唯一已知产物 `MDK-ARM/LegWheel/LegWheel.hex`（494,095 B）。
+- **构建**：Keil MDK 5.38（UV4；ARMCC 5.06 / ARMCLANG 16）`firmware/LegWheel/MDK-ARM/LegWheel.uvprojx`；唯一已知产物 `firmware/LegWheel/MDK-ARM/LegWheel/LegWheel.hex`（494,095 B）。
 - **本机工具链（2026-10-19 只读检查）**：安装根 `C:\STM32+Vscode+Keil5`（只读）：Keil 5.38、STM32CubeMX >6.17.0-RC5、VS Code 1.142；ARM GNU GCC 15.3.1 在 `C:\Program Files (x86)\Arm\...`；**CMake 未在安装目录/PATH 找到**。
 - **CubeMX**：用于板级初始化；后续新增通信口可能再用；`.ioc`/`.mxproject` 保留。但 `.ioc` 已漂移（08-27 vs freertos 10-18），**不要直接重新生成**；本机 CubeMX 只有 F1 固件包，H7 包缺失。
 - **CMake**：未安装/不启用（用户 2026-10-19 确认可能理解错；`build/` 删除即可、不恢复）；当前以 Keil + CubeMX 为准。
-- **仿真**：MATLAB/Simulink，当前在 `codes-chassis/轮腿底盘LQR仿真/simulation/`；S2 后迁入 `simulation/chassis-lqr/`。
+- **仿真**：MATLAB/Simulink，`simulation/chassis-lqr/`。
 - **调试观测**：VOFA 13 路、115200（以代码为准）。
 
 ## 5. 修改规则

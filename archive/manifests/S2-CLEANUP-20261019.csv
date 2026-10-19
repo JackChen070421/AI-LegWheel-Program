@@ -1,0 +1,8 @@
+"Path","Bytes","Action","Destination","Sha256","Reason"
+"firmware\LegWheel\Algorithm\inc\K_coeffs_normal.h","3677","move","archive\legacy\k-evidence\K_coeffs_normal.h","ef58795a0fb4a2d852b5f29c458e6dfef764474d6d993476e3b3e2741c8a74e6","孤儿 K 头，无 include；保留为 K 来源证据"
+"firmware\LegWheel\compile_flags.txt","4458","move","archive\legacy\stale-configs\compile_flags.txt","4f1b1c0c202c03b68dd89325eb1f22ab5babd1d62cdee7b85426bbc9e288af4a","旧绝对路径失效；归档，待重生成"
+"firmware\LegWheel\_inc_list.txt","3357","move","archive\legacy\stale-configs\_inc_list.txt","cf0f4a2eab6646eb6c24f1b6993e73f653d4d4600e1a615c655f5db5d1ec98f1","旧绝对路径失效；归档，待重生成"
+"firmware\LegWheel\MDK-ARM\dji_motor.h","11399","move","archive\legacy\unused-headers\dji_motor.h","b45ae19dbc2eeedd3e54ed60988844eb8a68eaa624a4c6b0c575b2791c40fdf7","未被 include、非 Keil FilePath；疑似旧头文件"
+"firmware\LegWheel\.claude\settings.local.json","112","delete","","dc49f40a5844e76ded5a37abd99e3ac6517381f9261855cd7aaa45ea30bd3830","外部工具本地设置，与项目 harness 无关"
+"simulation\chassis-lqr\balance_robot_real.slxc","5082","delete","","ee8edce225f3052fb4d14f4bc635763c9e4d72e875b6473f5deb9b7ddeda63e5","Simulink 编译缓存，可自动再生"
+"simulation\chassis-lqr\MathWorks\MATLAB\R2024a\graphicsState.bin","2","delete","","96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7","MATLAB 图形状态缓存，可自动再生"

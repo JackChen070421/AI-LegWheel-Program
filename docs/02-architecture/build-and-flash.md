@@ -25,7 +25,7 @@
 
 | 项 | 值 |
 |---|---|
-| 工程 | `codes-chassis/轮腿底盘控制代码/LegWheel/MDK-ARM/LegWheel.uvprojx`（S2 后迁到 `firmware/LegWheel/`） |
+| 工程 | `firmware/LegWheel/MDK-ARM/LegWheel.uvprojx` |
 | 器件 | STM32H723VGTx；H7 DFP 4.1.3 |
 | 编译器 | ARMCC 5.06 / ARMCLANG 16（工程实际用哪个待确认） |
 | 输出 | `MDK-ARM/LegWheel/LegWheel.hex` |
@@ -58,8 +58,9 @@
 | `build/` 是 2026-10-02 的 CMake 产物（elf/hex/bin） | 文件时间；已在 Tier A 删除 |
 | CMakeCache 指向 `C:/Program Files/toolchain/arm-gnu-toolchain-15.2...`、`C:/msys64/usr/bin/make.exe` | `build/CMakeCache.txt`（已删，S0 快照有） |
 | 工程根**没有** `CMakeLists.txt` | 全仓库只在 CMSIS/DSP 厂商目录有 |
-| `compile_flags.txt` 指向 `d:\RM-electro-control\...` | `compile_flags.txt` |
-| `_inc_list.txt` 指向 `D:/Github/Transistor-Wheeled-Legged-Robot/software` | `_inc_list.txt` |
+| `compile_flags.txt` 原指向 `d:\RM-electro-control\...` | 已归档 `archive/legacy/stale-configs/compile_flags.txt`（2026-10-19，路径失效） |
+| `_inc_list.txt` 原指向 `D:/Github/Transistor-Wheeled-Legged-Robot/software` | 已归档 `archive/legacy/stale-configs/_inc_list.txt`（2026-10-19，路径失效） |
+| Keil `uvprojx` 的 114 个 `<FilePath>` 都存在，但 **19 个 include 目录不存在** | 2026-10-19 迁移审计（旧“按设备分目录”布局）；编译前需修 include 路径（TODO-02/C5） |
 
 结论：**CMake 未安装/不启用**；`LegWheel/build/` 已在 Tier A 删除，用户 2026-10-19 确认**删除即可、不恢复**。当前以 Keil + CubeMX 为准；如果以后真的要用 CMake/CLion，再单独开任务（安装 + 重建顶层 `CMakeLists.txt` + toolchain）。
 
@@ -67,7 +68,7 @@
 
 | 项 | 值 |
 |---|---|
-| 当前路径 | `codes-chassis/轮腿底盘LQR仿真/simulation/`（S2 后到 `simulation/chassis-lqr/`） |
+| 当前路径 | `simulation/chassis-lqr/`（S2 已迁入） |
 | 关键脚本 | `k_calc_chuan_real2.m`、`Variables_and_Equations.m`、`Linear_and_CalcMatrix.m`、`Calc_K_and_fit.m`、`Leg_data.m` |
 | K 链路/来源 | 三份候选未定，见 [TODO-01](../00-plan/todo/01-k-matrix.md) |
 | 限制 | `.slx`/`.mat` 是二进制，agent 不能直接读；需要你导出/截图 |
@@ -93,6 +94,6 @@
 2. 烧录用 DAPLink 无线还是 ST-Link？步骤？
 3. **CMake 已澄清（2026-10-19）**：可能是理解错；`build/` 删除即可、不恢复；CMake 未安装/不启用。以后真要用再单独开任务。
 4. CubeMX 是否继续用于新增通信口？H7 固件包是否要安装（你操作）？
-5. 是否需要修复 `compile_flags.txt` / `_inc_list.txt` 的旧绝对路径？
+5. 是否需要修复 `archive/legacy/stale-configs/compile_flags.txt` / `_inc_list.txt` 并放回（或改为相对路径）？
 
 > 以上未确认前，不改构建配置；只记录。见 [TODO-02](../00-plan/todo/02-build-entry.md)。

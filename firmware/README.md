@@ -4,12 +4,12 @@
 
 | 目录 | 内容 | 状态 |
 |---|---|---|
-| `LegWheel/` | 底盘固件（STM32H723VGTx + FreeRTOS + 1 kHz） | **S2 后从 `codes-chassis/轮腿底盘控制代码/LegWheel/` 迁入** |
+| `LegWheel/` | 底盘固件（STM32H723VGTx + FreeRTOS + 1 kHz） | **已迁入（S2, 2026-10-19）** |
 | `gimbal/` | 云台固件（板1） | 预留 |
 
 ## 构建入口
 
-- Keil：`firmware/LegWheel/MDK-ARM/LegWheel.uvprojx`（S2 前在 `codes-chassis/...`）；
+- Keil：`firmware/LegWheel/MDK-ARM/LegWheel.uvprojx`；
 - 产物：`MDK-ARM/LegWheel/LegWheel.hex`；
 - 详见 [`../docs/02-architecture/build-and-flash.md`](../docs/02-architecture/build-and-flash.md)。
 

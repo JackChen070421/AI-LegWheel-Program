@@ -30,7 +30,7 @@
 
 | # | 问题 | 现状/为什么必须问 | 你的回答 |
 |---|---|---|---|
-| P0-1 | **固件实际生效的 K 矩阵是哪一份？** `lqr_coeffs.cpp`、`Algorithm/inc/K_coeffs_normal.h`、还是仿真目录同名文件？ | 固件 `LqrGains` 读 `lqr_coeffs.cpp`；孤儿头文件未被 include；仿真文件数值不同。三份不能混用 | |
+| P0-1 | **固件实际生效的 K 矩阵是哪一份？** `lqr_coeffs.cpp`、`archive/legacy/k-evidence/K_coeffs_normal.h`、还是 `simulation/chassis-lqr/K_coeffs_normal.h`？ | 固件 `LqrGains` 读 `lqr_coeffs.cpp`；孤儿头文件未被 include；仿真文件数值不同。三份不能混用 | |
 | P0-2 | **K 的生成链用哪条？** 旧链（`k_calc_chuan_real2.m`，Ts=0.001）还是新链（`Variables_and_Equations→Linear_and_CalcMatrix→Num_function→Calc_K_and_fit`，Ts=0.002 + `leg_data` 实测表）？ | 决定以后“重算 K”用哪套脚本、哪组 Q/R | |
 | P0-3 | **唯一构建入口是什么？** Keil、CMake/CLion，还是两者都维护？工具链版本/路径？ | Keil hex 最新（10-18）；CMake 产物停在 10-02；工程根无 CMakeLists；换机不可复现 | ✅ 当前：**Keil 编译/烧录 + CubeMX 板级初始化**；工具版本已记录；CMake 未安装/不启用（用户 2026-10-19 确认可能理解错，`build/` 删除即可） |
 | P0-4 | **14.3 kg 的组成口径**：是否 = 11.058（车体）+ 2×1.067（腿）+ 2×0.554（轮）？车体是否含电池/板/线？ | 代码这组数正好凑出 14.3，但没台账；参数表需要唯一口径 | |
@@ -74,7 +74,7 @@
 | A12 | IMU 型号/安装位置/方向/偏置；用 DM IMU 还是 N100？ | 姿态/杠杆臂补偿 | `ins.h` 0.20 m、`INS_IMU_SOURCE` | P0 | 🧪 |
 | A13 | 新车相对旧车的结构变化：腿长、轮距、重心高度、质量分布？ | 旧 K/旧参数能否沿用 | README/STRUCTURES | P1 | ⬜ |
 | A14 | 关节零点/限位/phi0 标定值是否已按新车更新？ | 腿角控制/安全 | `Cloud.h`/`Chassis.h` 注释 | P1 | 🧪 |
-| A15 | 供电链路：电池→继电器→分电板→各电机；线径/保险/急停？ | 安全/布线文档 | `STRUCTURES.md` | P2 | ⬜ |
+| A15 | 供电链路：电池→继电器→分电板→各电机；线径/保险/急停？ | 安全/布线文档 | [`hardware-overview.md`](../02-architecture/hardware-overview.md) | P2 | ⬜ |
 
 ---
 
@@ -108,10 +108,10 @@
 | ID | 问题 | 影响 | 当前证据 | P | 状态 |
 |---|---|---|---|---|---|
 | C1 | 唯一构建入口：Keil / CMake / 两者？ | 换机/CI/回退 | 见 P0-3 | P0 | ✅ Keil+CubeMX；CMake 不启用（2026-10-19） |
-| C2 | 工具链版本与安装路径？（已查：MDK 5.38 / ARMCC 5.06 / ARMCLANG 16、CubeMX >6.17、VSCode 1.142、ARM GCC 15.3；CMake 未安装） | 可复现 | 安装根 `C:\STM32+Vscode+Keil5`（只读）；`CMakeCache.txt`、`compile_flags.txt` | P0 | ✅ 版本已记录；CMake 不启用 |
+| C2 | 工具链版本与安装路径？（已查：MDK 5.38 / ARMCC 5.06 / ARMCLANG 16、CubeMX >6.17、VSCode 1.142、ARM GCC 15.3；CMake 未安装） | 可复现 | 安装根 `C:\STM32+Vscode+Keil5`（只读）；`archive/legacy/stale-configs/`、`CMakeCache.txt` | P0 | ✅ 版本已记录；CMake 不启用 |
 | C3 | `.ioc` 是否还用于 CubeMX 重新生成？如何保护用户代码？ | 重新生成会覆盖 `freertos.c` | `.ioc` 08-27 vs `freertos.c` 10-18 | P0 | 🔎 CubeMX 保留；H7 包缺失；不要直接重生成 |
 | C4 | 烧录方式：DAPLink 无线 / ST-Link / JLink？有无脚本/步骤？ | 上手/复现 | `Daplink/README.md` | P1 | ⬜ |
-| C5 | 旧绝对路径（`D:/Github`、`d:/RM-electro-control`）是否要修？还是只记录？ | 换机编译 | `compile_flags.txt`、`_inc_list.txt` | P1 | ⬜ |
+| C5 | 旧绝对路径（`D:/Github`、`d:/RM-electro-control`）是否要修？还是只记录？ | 换机编译 | `archive/legacy/stale-configs/{compile_flags.txt,_inc_list.txt}`；Keil 19 个 include 目录失效 | P1 | ⬜ |
 | C6 | `build/` CMake 产物是否保留/可信？ | 清理 | 2026-10-02 停更 | P2 | ⬜ |
 | C7 | VOFA：13 路数据、115200、上位机配置在哪？ | 调试/实验记录 | `vofa.c`、`freertos.c` | P1 | ⬜ |
 | C8 | 编译警告等级、静态分析（clang-tidy/cppcheck）是否要做？ | 质量门 | 无 | P2 | ⬜ |
@@ -201,4 +201,4 @@
 4. **D1、D3**（云台协议，决定是否先写协议草案）；
 5. 其余 P1/P2 可以改天。
 
-> 说明：本文不要求你一次答完。**S1（只新增文档/目录）不依赖这些答案**；S2（迁移代码）前至少需要 P0-1/2/3/4/5/6/7/10 与 A1/A11/A12/C3/D3；P0-8/9 安全相关也建议在 S2 前答；P0-11 是 S3 删除的准入门槛。
+> 说明：本文不要求你一次答完。**S1 已完成；S2（代码/仿真迁移）已于 2026-10-19 执行**。剩余 P0 主要用于参数/K/协议与后续调参与实车验证，不再阻塞目录迁移。

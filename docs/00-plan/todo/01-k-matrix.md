@@ -20,8 +20,8 @@
 | 候选 | 位置 | 状态 |
 |---|---|---|
 | A | `firmware/LegWheel/Algorithm/src/lqr_coeffs.cpp:6`（normal）、`:48`（off_ground） | **固件 `LqrGains` 实际读取**；40×6 系数 |
-| B | `firmware/LegWheel/Algorithm/inc/K_coeffs_normal.h` | 全仓库无 `#include`，孤儿副本；数值与 A 不同 |
-| C | `simulation/chassis-lqr/simulation/K_coeffs_normal.h` | 仿真目录同名文件；与 A 不同 |
+| B | `archive/legacy/k-evidence/K_coeffs_normal.h` | 2026-10-19 从固件 `Algorithm/inc/` 移入；全仓库无 `#include`，孤儿副本；数值与 A 不同 |
+| C | `simulation/chassis-lqr/K_coeffs_normal.h` | 仿真目录同名文件；与 A 不同 |
 
 生成链：
 
