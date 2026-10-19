@@ -73,6 +73,7 @@ tar -xf archive\snapshots\snapshot-20261019.tar -C <临时目录>
 - [x] manifest 对比（0 缺失）
 - [x] 多智能体验证/冗余审计（t6 PASS / t7 PASS / t8 PASS）
 - [x] 删除清单与执行（7 项 / 28,087 B）
-- [ ] git 提交 + tag
+- [x] git 提交：`d03f9dffa95d97c275a236f382f439210af3c67c`（`struct: migrate firmware and simulation into target tree (S2)`）
+- [x] tag：`s2-migration`（最终记录 commit）
+- [x] final manifest 重算（7,089 行 / 1,407,786,484 B）
 - [ ] Keil 打开/编译验证（需要你或后续任务；19 个 include 目录失效待修）
-- [ ] final manifest 重算（清理后）

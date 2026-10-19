@@ -219,7 +219,8 @@
 - 多智能体审计：t6 PASS、t7 PASS、t8 PASS（0 findings）；报告 `docs/00-plan/supervisor-review-s2.md`；
 - 清理 7 项 / 28,087 B：`.slxc`、`MathWorks`、`.claude` 删除；K 头、`compile_flags.txt`、`_inc_list.txt`、`dji_motor.h` 移入 `archive/legacy/`；
 - 清理后 final manifest：7,089 行 / 1,407,786,484 B；
-- **Keil 风险**：114 个 `<FilePath>` 存在，但 19 个 include 目录失效（待修）。
+- **Keil 风险**：114 个 `<FilePath>` 存在，但 19 个 include 目录失效（待修）；
+- 迁移提交：`d03f9df`；tag `s2-migration`（最终记录 commit）。
 
 ### 未做
 
