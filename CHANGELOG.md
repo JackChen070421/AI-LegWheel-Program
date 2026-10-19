@@ -193,6 +193,7 @@
 
 ### 结论/记录
 
+- **2026-10-19 后续澄清**：用户确认 CMake 可能是理解错；`LegWheel/build/` **删除即可、不恢复**；CubeMX 仍保留；当前工作流按 **Keil 编译/烧录 + CubeMX 板级初始化** 记录，CMake 不启用。
 - 未修改 `C:\STM32+Vscode+Keil5` 下任何文件；仅列目录/读版本/执行 `--version`；
 - `.ioc`、`.mxproject`、Keil 工程、`archive/legacy/hex` 均保留；
 - `LegWheel/build/`（CMake 生成物）已在 Tier A 删除；如需恢复，可从 S0 快照取（约 5 MB），但 cache 路径已失效；

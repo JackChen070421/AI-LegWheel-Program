@@ -1,7 +1,7 @@
 # 构建与烧录（Build & Flash）
 
 > 最后更新：2026-10-19（工具链只读检查）  
-> 状态：**Keil + CubeMX 为当前事实工作流**；CMake 未在本机找到；烧录步骤待确认（C4）。  
+> 状态：**Keil + CubeMX 为当前事实工作流**；CMake 未安装/不启用（用户 2026-10-19）；烧录步骤待确认（C4）。  
 > 安装根 `C:\STM32+Vscode+Keil5` **只读**：只浏览/读版本，不修改、不移动、不写（AGENTS.md 黄金原则 9）。
 
 ## 1. 本机工具链（2026-10-19 只读检查）
@@ -61,7 +61,7 @@
 | `compile_flags.txt` 指向 `d:\RM-electro-control\...` | `compile_flags.txt` |
 | `_inc_list.txt` 指向 `D:/Github/Transistor-Wheeled-Legged-Robot/software` | `_inc_list.txt` |
 
-结论：**CMake 目前不可复现**，且本机未安装。如果你实际用 CMake/CLion（可能在另一台机器，或用 CLion 自带 CMake），请告诉路径/版本；否则以 Keil 为准。`LegWheel/build/` 可从 S0 快照恢复（5 MB），但缓存路径失效，仅作参考。
+结论：**CMake 未安装/不启用**；`LegWheel/build/` 已在 Tier A 删除，用户 2026-10-19 确认**删除即可、不恢复**。当前以 Keil + CubeMX 为准；如果以后真的要用 CMake/CLion，再单独开任务（安装 + 重建顶层 `CMakeLists.txt` + toolchain）。
 
 ## 5. 仿真（MATLAB）
 
@@ -91,7 +91,7 @@
 
 1. 实际编译是 Keil UV4，还是 VSCode/Keil Assistant 触发？工程用 ARMCC 还是 ARMCLANG？
 2. 烧录用 DAPLink 无线还是 ST-Link？步骤？
-3. 你说的 CMake 具体指什么：CubeMX 生成工程、`LegWheel/build/`、还是另一台机器/CLion？需不需要恢复 `build/`？
+3. **CMake 已澄清（2026-10-19）**：可能是理解错；`build/` 删除即可、不恢复；CMake 未安装/不启用。以后真要用再单独开任务。
 4. CubeMX 是否继续用于新增通信口？H7 固件包是否要安装（你操作）？
 5. 是否需要修复 `compile_flags.txt` / `_inc_list.txt` 的旧绝对路径？
 

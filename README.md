@@ -41,14 +41,14 @@ RoboMaster 轮腿平衡步兵：两条腿 + 两个驱动轮，靠 LQR/VMC 保持
 
 ### 编译 / 烧录（Keil）
 
-> 本机工具（2026-10-19 只读检查）：Keil MDK 5.38 + STM32CubeMX >6.17 + VS Code 1.142 + ARM GNU GCC 15.3；安装根 `C:\STM32+Vscode+Keil5`（**只读**）。CMake 未找到；`build/` 已删，可从快照恢复但路径失效。CubeMX 用于板级初始化、保留 `.ioc`；不要直接重新生成。
+> 本机工具（2026-10-19 只读检查）：Keil MDK 5.38 + STM32CubeMX >6.17 + VS Code 1.142 + ARM GNU GCC 15.3；安装根 `C:\STM32+Vscode+Keil5`（**只读**）。CMake 未安装/不启用；`build/` 已删（删除即可，不恢复）。CubeMX 用于板级初始化、保留 `.ioc`；不要直接重新生成。
 
 1. 打开 `codes-chassis/轮腿底盘控制代码/LegWheel/MDK-ARM/LegWheel.uvprojx`（S2 后迁到 `firmware/LegWheel/`）；
 2. Build；产物在 `MDK-ARM/LegWheel/LegWheel.hex`（S0 已留档 494,095 B）；
 3. 烧录：DAPLink 无线 / ST-Link（具体步骤待补，见 build 文档）。
 
 **注意**：
-- CMake `build/` 已删除，不要依赖（历史产物，无法复现）；CMake 本机未找到；
+- CMake 未安装/不启用；`build/` 已删除（用户 2026-10-19 确认删除即可，不恢复）；
 - `.ioc` 停在 2026-08-27，`freertos.c` 已改到 2026-10-18；**不要直接重新生成**，会覆盖用户代码；CubeMX 保留（后续加通信口可能用），但本机只有 F1 固件包，H7 包缺失；
 - 详见 [`docs/02-architecture/build-and-flash.md`](docs/02-architecture/build-and-flash.md)。
 

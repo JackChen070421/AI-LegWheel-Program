@@ -49,7 +49,7 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 - **构建**：Keil MDK 5.38（UV4；ARMCC 5.06 / ARMCLANG 16）`MDK-ARM/LegWheel.uvprojx`（S2 前在 `codes-chassis/...`）；唯一已知产物 `MDK-ARM/LegWheel/LegWheel.hex`（494,095 B）。
 - **本机工具链（2026-10-19 只读检查）**：安装根 `C:\STM32+Vscode+Keil5`（只读）：Keil 5.38、STM32CubeMX >6.17.0-RC5、VS Code 1.142；ARM GNU GCC 15.3.1 在 `C:\Program Files (x86)\Arm\...`；**CMake 未在安装目录/PATH 找到**。
 - **CubeMX**：用于板级初始化；后续新增通信口可能再用；`.ioc`/`.mxproject` 保留。但 `.ioc` 已漂移（08-27 vs freertos 10-18），**不要直接重新生成**；本机 CubeMX 只有 F1 固件包，H7 包缺失。
-- **CMake**：现状见 `docs/02-architecture/build-and-flash.md`；`build/` 是旧机器产物（已删，可从 S0 快照恢复，但缓存路径失效）；是否实际使用 CMake 待确认（TODO-02）。
+- **CMake**：未安装/不启用（用户 2026-10-19 确认可能理解错；`build/` 删除即可、不恢复）；当前以 Keil + CubeMX 为准。
 - **仿真**：MATLAB/Simulink，当前在 `codes-chassis/轮腿底盘LQR仿真/simulation/`；S2 后迁入 `simulation/chassis-lqr/`。
 - **调试观测**：VOFA 13 路、115200（以代码为准）。
 

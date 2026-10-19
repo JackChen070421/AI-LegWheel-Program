@@ -1,6 +1,6 @@
 # TODO-02 · 构建入口与工具链（Keil / CubeMX / CMake）
 
-> 状态：🔎 部分确认（2026-10-19）　优先级：P0　负责人：你 + AI  
+> 状态：🔎 部分确认（工具已查；CMake 已澄清；剩烧录/编译器确认）　优先级：P0　负责人：你 + AI  
 > 对应：`open-questions.md` P0-3、C1、C2、C3、C4、C5、C6  
 > 关联：[`docs/02-architecture/build-and-flash.md`](../../02-architecture/build-and-flash.md)
 
@@ -24,7 +24,8 @@
 - **CubeMX 要保留**：用于开发板初始化；后续如果新增/调用通信口，可能还要用 CubeMX；
 - 工具安装根：`C:\STM32+Vscode+Keil5`；
 - **agent 只读**：不要修改安装路径，只能浏览（已写入 AGENTS.md 黄金原则 9）；
-- 关于 “CMake”：你的表述是“CubeMX 设置开发板初始化的时候用的”；实际检查**未在本机找到 cmake.exe**（详见 §4），需要确认你指的是 CubeMX 工作流、`LegWheel/build/`，还是另一台机器/CLion。
+- 关于 “CMake”：你的表述是“CubeMX 设置开发板初始化的时候用的”；实际检查**未在本机找到 cmake.exe**（详见 §4）。
+- **2026-10-19 后续澄清**：你确认可能是理解错了，`LegWheel/build/` **删除即可，不恢复**；CubeMX 仍保留。当前工作流按 **Keil 编译/烧录 + CubeMX 板级初始化** 记录；CMake 记为“未安装/不启用”，以后真要用再单独开任务。
 
 ## 4. 目前已知（2026-10-19 只读检查）
 
@@ -52,16 +53,13 @@
 | **A. Keil 编译 + CubeMX 管初始化**（推荐） | Keil UV4 编译/烧录；CubeMX 只改 `.ioc` 的板级/外设，生成后在副本上人工合并；CMake 暂不使用 | 换机需装 Keil + H7 DFP；CubeMX 需 H7 固件包；要严格“副本生成”纪律 |
 | **B. 只用 Keil** | 不动 CubeMX；新通信口手工改 `Core/` 初始化 | 最稳；但改外设易错，后续维护差 |
 | **C. CMake/CLion** | 安装 CMake，重建顶层 `CMakeLists.txt` + toolchain | 本机无 CMake；工作量大；需与 Keil 验证 hex 一致 |
-| **D. 恢复 build/** | 从 S0 快照恢复 `LegWheel/build/` | 只有旧产物；cache 路径失效，不能直接复现；仅作参考 |
+| **D. 恢复 build/** | 从 S0 快照恢复 `LegWheel/build/` | **用户 2026-10-19 确认不需要**：删除即可，不恢复 |
 
 ## 6. 要回答它，需要做什么
 
 1. 确认：日常是 **VSCode + Keil Assistant 触发 UV4**，还是直接开 Keil？工程实际用 ARMCC 5.06 还是 ARMCLANG 16？
 2. 确认烧录方式（DAPLink 无线 / ST-Link / JLink）与步骤；
-3. 确认“CMake”具体指什么：
-   - 如果是 CubeMX 工作流 → 记录为“CubeMX 保留”，不恢复 build/；
-   - 如果是 `LegWheel/build/` → 可从快照恢复 5 MB（但不解决路径失效）；
-   - 如果是另一台机器/CLion → 给路径/版本，单独配置。
+3. **CMake 已澄清（2026-10-19）**：可能是理解错；`LegWheel/build/` 删除即可、不恢复；CMake 未安装/不启用。以后真要用再单独开任务。
 4. 若继续用 CubeMX 改 H7 外设：需要安装 **STM32Cube_FW_H7**（你操作；安装目录只读）；并约定“先复制 `.ioc`/工程到临时目录生成，再人工合并”的流程。
 5. 决定是否修 `compile_flags.txt`/`_inc_list.txt`（或只记录、不改）。
 
@@ -77,3 +75,4 @@
 
 - 2026-10-19：S0 已把 `LegWheel.hex` 纳入快照；构建入口待确认。
 - 2026-10-19：用户确认 CubeMX 保留（板级初始化/后续通信口），工具安装根 `C:\STM32+Vscode+Keil5` 只读；本机检查到 Keil 5.38 / CubeMX 6.17 / VSCode 1.142 / ARM GCC 15.3，CMake 未找到；H7 固件包缺失。
+- 2026-10-19 后续：用户确认 CMake 可能是理解错，`build/` 删除即可、不恢复；当前按 Keil + CubeMX 记录。
