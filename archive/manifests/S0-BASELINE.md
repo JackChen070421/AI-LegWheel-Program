@@ -79,3 +79,9 @@ tar -xf D:\RM\LG-AI-process\archive\snapshots\snapshot-20261019.tar -C D:\RM\res
 - 未移动 `firmware/`/`simulation/`（S2 才做）。
 - 未回答 P0 参数/K/协议问题；见 `docs/00-plan/todo/`。
 - 下一步：S1 只新增目录/文档；S2 前重生成 manifest 并确认 P0。
+
+## 7. Tier A 删除（2026-10-19）
+
+- 用户 2026-10-19 授权「删除所有的 Tier A」；明细见 `TIER-A-DELETION-20261019.md` / `.csv`。
+- 共 101 行（94 文件 + 7 空目录），414,476,633 B；包括 build/、uvguix、tmp、slprj、日志、上交重复 zip、0 B 占位、空目录。
+- **唯一 Keil 产物 `LegWheel.hex` 保留**；Tier B 未删；可从本快照回退。

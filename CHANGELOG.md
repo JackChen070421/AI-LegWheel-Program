@@ -110,3 +110,14 @@
   - Tier C：构建/文档必需，不动。
 - **旧车代码/历史版本需求清单**补入 TODO-06 §2.3；工作区扫描未发现旧车代码，仅有厂商参考资料；待用户提供路径或确认“没有”。
 - 未删除、未移动任何文件。
+
+---
+
+## 2026-10-19 — Tier A 删除（用户授权）
+
+- 用户 2026-10-19 授权「删除所有的 Tier A」；S0 快照已存在，可回退。
+- 共 **101 行（94 文件 + 7 空目录），414,476,633 B（395.3 MiB）**。
+- 删除内容：`LegWheel/build/`、`MDK-ARM/*.uvguix.*`、`MDK-ARM/tmp/`、`.vscode` 日志、`simulation/slprj/`、上交重复 zip、0 B 占位（`ARCHITECTURE.md`/`docs/papers.md`/山海 lock）、7 个空目录。
+- **保留**：`MDK-ARM/LegWheel/LegWheel.hex`（494,095 B，唯一 Keil 产物）、`uvprojx/uvoptx`、JLink 配置、DSP lib、Tier B 全部参考资料。
+- 清单/回退：`archive/manifests/TIER-A-DELETION-20261019.csv` / `.md`；S0 快照可解包恢复。
+- 记录：TODO-06、open-questions P0-11/F6、S0-BASELINE 已同步。
