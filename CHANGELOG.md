@@ -121,3 +121,47 @@
 - **保留**：`MDK-ARM/LegWheel/LegWheel.hex`（494,095 B，唯一 Keil 产物）、`uvprojx/uvoptx`、JLink 配置、DSP lib、Tier B 全部参考资料。
 - 清单/回退：`archive/manifests/TIER-A-DELETION-20261019.csv` / `.md`；S0 快照可解包恢复。
 - 记录：TODO-06、open-questions P0-11/F6、S0-BASELINE 已同步。
+
+---
+
+## 2026-10-19 — S1 结构骨架（新增目录/文档）
+
+### 新增
+
+- `AGENTS.md` — agent 入口 + 8 条黄金原则（含 Tier A 清理、旧车代码隔离）
+- `README.md` — 重写；旧版存 `docs/01-product/legacy-readme-2026-10-19.md`
+- `docs/00-governance/README.md`
+- `docs/01-product/{README.md,overview.md,legacy-readme-2026-10-19.md}`
+- `docs/02-architecture/{README.md,system.md,build-and-flash.md}`
+- `docs/03-theory/README.md`
+- `docs/04-parameters/{README.md,parameters.md}`
+- `docs/05-experiments/{README.md,test-log-template.md}`
+- `docs/06-plans/{README.md,roadmap.md}`
+- `docs/07-decisions/{README.md,0001-hybrid-structure.md}`
+- `docs/08-quality/{README.md,review-checklist.md}`
+- `docs/09-references/{README.md,index.md}`
+- `firmware/{README.md,gimbal/README.md}`
+- `simulation/{README.md,chassis-lqr/README.md}`
+- `hardware/{README.md,structure/README.md,electronics/README.md,wiring/README.md,bom/README.md}`
+- `experiments/{README.md,logs/README.md,calibration/README.md,reports/README.md}`
+- `tools/README.md`
+- `archive/{README.md,manifests/README.md,legacy/README.md,snapshots/README.md,trash-20261019/README.md}`
+
+### 变更
+
+- `docs/00-plan/todo/06-git-baseline-deletion.md`：Tier A 已删；新增 §2.4 旧车代码后续移入流程（用户 2026-10-19 决定暂不提供、后续统一移入，避免干扰）。
+- `docs/00-plan/open-questions.md`：P0-10/E8 状态更新（旧车代码暂不提供；远端暂不需要）。
+- `docs/00-plan/todo/README.md`：06 状态更新。
+
+### 未做
+
+- 未移动 `firmware/LegWheel`、`simulation/chassis-lqr`（S2 待 P0）。
+- 未删除 Tier B；未 push 远端。
+- 未改控制代码/构建配置。
+
+### 验证
+
+- 链接检查：60 个 Markdown，0 坏链（本地相对链接）。
+- 结构树：`docs/00–09`、`firmware/`、`simulation/`、`hardware/`、`experiments/`、`tools/`、`archive/` 均有 README。
+- 旧 README 已归档；当前 README 可读。
+- 修正：`docs/04-parameters/parameters.md` 质量预算口述值 0.55 的合计应为 **14.292**（原稿误写 13.992）；0.554 精确值仍为 14.300。

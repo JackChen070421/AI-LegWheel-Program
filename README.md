@@ -1,30 +1,108 @@
-目前的工作过进度（简写）
-我们的之前的旧车被拆了，换成了新车。新车要安装气弹簧、云台等等，会有重量上的变化和结构上的轻微变化
-新车目前装完了底盘，完成了布线。还没有加气弹簧和云台等等
-旧版的控制代码（适用于旧底盘，无云台和气弹簧），可以实现以下功能：多个状态切换（包括NORMAL平地行驶、急停、原地旋转、上台阶等等状态机）
-目前的控制代码是在旧版的基础上，着重修改了轮重、车重两个参数，并且利用这两个改动之后的数据重新算了一个K矩阵，并将其在代码中更新
+# 轮腿平衡步兵（RoboMaster）— 项目总览
 
-未来的工作计划：
-1.现阶段任务，最最重要的，就是继续测量新车可能改变的其他参数，并将其更新至代码和K矩阵中，让新代码能够使新底盘完成至少跟旧车相等的代码功能。
-2.在此基础上，修改优化bug，使新新底盘能够比较优良的性能运行；重点优化二级台阶，尝试突破三级台阶
-3.安装气弹簧，并修改代码，使其适应气弹簧，能够比较好地完成除了跳跃和倒地自起之外的其他状态机
-4.重点突破跳跃。跳跃有高度和距离要求。之后同步
-5.安装云台后，先修改地盘代码参数，使能够较稳定的携带云台运行。接下来写云台和底盘的板件通信。然后优化倒地自起、跳跃、上台阶等动作
-6.最终性能测试
+> 项目根：`D:\RM\LG-AI-process`　最后更新：2026-10-19（S1 结构骨架）  
+> 给 AI/新同学：先读 [`AGENTS.md`](AGENTS.md)；参数以 [`docs/04-parameters/parameters.md`](docs/04-parameters/parameters.md) 为准。
 
+## 1. 一句话
 
-今天的工作计划：
-我使用agent的目的是为了测试harness engineering的方式究竟是否可行。所以我将尽可能采用harness engineering的规范完成整个项目。今晚要结合ai尽可能清晰地梳理出一个项目的文件结构，参考https://openai.com/zh-Hans-CN/index/harness-engineering/。
-为了完成这个过程，我需要分以下几个阶段：
-1.ai进行浏览最初的项目文件夹，初步理解这个文件夹里面含有什么，以及初步理解我想要干什么
-2.和ai同步信息，这一个过程需要ai多向我提问，我来回答，直道ai足够理解整个项目的目标并能够初步制定出一份plan，为目前所含有的文件整理出一个合理的项目架构
-3.ai结合目前已知信息（这个文件夹中的所有文件，以及我与他之间的对话），分析出如果要达到目标，还需要什么信息，列一个清单，并将我现在回答不出，有待以后测试的内容记录。
-4.整理成一个适合于harness-engineering的项目结构，并预留出现在还没有，但将来需要填充的那些文件夹。
+RoboMaster 轮腿平衡步兵：两条腿 + 两个驱动轮，靠 LQR/VMC 保持平衡与运动；未来加云台（板1）与气弹簧。当前是“新车硬件更新、旧代码适配”阶段。
 
+## 2. 当前阶段
 
-我对ai的要求：
-1.保持效率，不要在一个问题上思考太久，如果有不确定的事情及时问我
-2.不要凭空捏造数据，一切根据现有的已知信息（这个文件夹中的所有文件，以及我与他之间的对话）进行推理，如果要引用其他数据或者文件，需请示我
-3.对修改进行记录，方便回退
-4.一切优先符合harness-engineering的原则，最好建一个agent.md方便observe以及项目移植
-5.除非我给了权限，或者得到了我的确认，不要修改这个文件夹之外的文件夹内容
+- 新车：底盘装完、布线完成；**尚未装气弹簧、云台**；
+- 旧车：已拆；旧车代码/历史版本**暂未并入**（等后续统一移入，见 [TODO-06](docs/00-plan/todo/06-git-baseline-deletion.md)）；
+- 固件：基于旧版底盘代码，已改轮重/车重并重算过 K；但仓内存在**三份 K 候选**，生效来源待确认（P0-1/2）；
+- 云台：代码已有 `Cloud` 与 `board_comm` 骨架，硬件未做；`BOARD_COMM_GIMBAL_PRESENT=0`，板间通信“只收不发”。
+
+## 3. 硬件一览
+
+| 部件 | 当前配置 | 备注 |
+|---|---|---|
+| 主控（板2） | DM-MC02 / STM32H723VGTx | 资料在 `researchs/hardwares/DM-MC02/` |
+| 关节电机 | 4 × DM-8009P | 具体型号/减速比待确认（A11） |
+| 驱动轮电机 | 2 × M3508 + C620 | 代码里只有左右 2 个轮电机 |
+| IMU | 固件支持 DM IMU / N100 | 实车用哪个、安装位置待确认（A12） |
+| 遥控 | SBUS 接收机（ET16S） | 当前控制入口 |
+| 烧录/调试 | DAPLink 无线 + VOFA | 资料在 `researchs/hardwares/Daplink/` |
+| 供电 | 电池 → 继电器 → 分电板 | 调试期继电器用于安全 |
+| 重量 | 底盘总重 **14.3 kg**；单轮 **0.55 kg** | 用户 2026-10-19 口述；其余待测 |
+
+> 结构/接线旧描述仍在 [`STRUCTURES.md`](STRUCTURES.md)；后续会迁入 `docs/02-architecture/`。
+
+## 4. 软件结构（摘要）
+
+- **控制环**：FreeRTOS，`ControlLoopTask` 1 kHz：INS → 观测器 → `Chassis.Controller()` → 电机下发 → SDM02（仅起跳压缩段）；
+- **状态机**：NORMAL / RECOVERING / JUMPING / JOINT_DEBUG / ESTOP / STEP_UP / SPIN；
+- **算法**：LQR（4×10 实时 K，40×6 拟合系数）+ VMC + LESO + 卡尔曼/四元数 EKF；
+- **通信**：CAN1 关节、CAN2 轮/云台预留、CAN3 板间；USART 接 IMU/遥控/VOFA；
+- 详细结构与证据见 [`docs/02-architecture/system.md`](docs/02-architecture/system.md)。
+
+## 5. 快速开始
+
+### 编译 / 烧录（Keil）
+
+1. 打开 `codes-chassis/轮腿底盘控制代码/LegWheel/MDK-ARM/LegWheel.uvprojx`（S2 后迁到 `firmware/LegWheel/`）；
+2. Build；产物在 `MDK-ARM/LegWheel/LegWheel.hex`（S0 已留档 494,095 B）；
+3. 烧录：DAPLink 无线 / ST-Link（具体步骤待补，见 build 文档）。
+
+**注意**：
+- CMake `build/` 已删除，不要依赖（历史产物，无法复现）；
+- `.ioc` 停在 2026-08-27，`freertos.c` 已改到 2026-10-18；**不要直接重新生成**，会覆盖用户代码；
+- 详见 [`docs/02-architecture/build-and-flash.md`](docs/02-architecture/build-and-flash.md)。
+
+### 仿真（MATLAB）
+
+当前在 `codes-chassis/轮腿底盘LQR仿真/simulation/`（S2 后迁到 `simulation/chassis-lqr/`）。LQR 链路与三份 K 候选见 [TODO-01](docs/00-plan/todo/01-k-matrix.md)。
+
+### 调试观测
+
+VOFA 13 路、115200（以代码为准）；日志/标定以后放 `experiments/`。
+
+## 6. 目录导航（当前 → S2 后）
+
+| 当前 | S2 后 | 内容 |
+|---|---|---|
+| `codes-chassis/轮腿底盘控制代码/LegWheel/` | `firmware/LegWheel/` | 底盘固件（Keil） |
+| `codes-chassis/轮腿底盘LQR仿真/` | `simulation/chassis-lqr/` | MATLAB/Simulink |
+| `researchs/` | `researchs/`（原地） | 外部参考/厂商资料（只读） |
+| `docs/` | `docs/` | 文档中心（00–09） |
+| `hardware/`、`experiments/`、`tools/`、`archive/` | 同左 | 新建/预留 |
+
+## 7. 文档地图
+
+| 文档 | 用途 |
+|---|---|
+| [`AGENTS.md`](AGENTS.md) | agent 入口 + 黄金原则 |
+| [`docs/01-product/overview.md`](docs/01-product/overview.md) | 目标、阶段、验收 |
+| [`docs/02-architecture/system.md`](docs/02-architecture/system.md) | 软硬件/控制/通信结构 |
+| [`docs/04-parameters/parameters.md`](docs/04-parameters/parameters.md) | 参数台账（唯一事实源） |
+| [`docs/00-plan/open-questions.md`](docs/00-plan/open-questions.md) | 16 条 P0 问题清单 |
+| [`docs/00-plan/todo/`](docs/00-plan/todo/README.md) | 逐项解决的待办 |
+| [`docs/09-references/index.md`](docs/09-references/index.md) | 外部资料索引 |
+| [`CHANGELOG.md`](CHANGELOG.md) | 变更/回退记录 |
+
+## 8. 当前 P0（摘要）
+
+1. K 矩阵生效来源与生成链（P0-1/2）；
+2. 唯一构建入口/工具链（P0-3）；
+3. 14.3 kg 口径 + `0.788` vs `1.067`（P0-4/5）；
+4. 轮距定义与三种用法（P0-6）；
+5. `BOARD_PROTOCOL.md`、急停、状态映射（P0-7/8/9）；
+6. 旧车代码位置（P0-10，远端暂不需要）；Tier A 已删、Tier B 保留（P0-11）。
+
+完整清单与状态见 [`docs/00-plan/open-questions.md`](docs/00-plan/open-questions.md)。
+
+## 9. 变更与回退
+
+- git：`main`；基线 tag `pre-structure-20261019`（S0）、`s0-baseline`；
+- 全量快照：`archive/snapshots/snapshot-20261019.tar`（1.71 GiB，SHA-256 见 [S0-BASELINE](archive/manifests/S0-BASELINE.md)）；
+- Tier A 删除记录：`archive/manifests/TIER-A-DELETION-20261019.*`；
+- 变更记录： [`CHANGELOG.md`](CHANGELOG.md)。
+
+## 10. 参考与许可
+
+- 上海交大交龙战队 2023 平衡步兵开源（文档/视频）：`researchs/codes/上海交大开源/`（仅学习参考，未经允许不得商用）；
+- 山海机甲开源（底盘/云台代码）：`researchs/codes/山海机甲开源/`；
+- 知乎《RoboMaster 平衡步兵机器人控制系统设计》：`researchs/papers/`；
+- DM-MC02 板卡资料/例程：`researchs/hardwares/DM-MC02/`；
+- 以上资料**只读**，不改、不移动、不提交进 git（大文件已忽略）。

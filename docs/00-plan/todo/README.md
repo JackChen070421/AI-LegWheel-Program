@@ -15,7 +15,7 @@
 | [03-mass-parameters.md](./03-mass-parameters.md) | P0-4/P0-5：14.3 kg 口径、0.788 vs 1.067 | P0 | ⬜ | 4 |
 | [04-wheel-track.md](./04-wheel-track.md) | P0-6：轮距定义与三种用法 | P0 | ⬜ | 5 |
 | [05-protocol-estop-state.md](./05-protocol-estop-state.md) | P0-7/8/9：协议、急停、状态映射 | P0 | ⬜ | 6 |
-| [06-git-baseline-deletion.md](./06-git-baseline-deletion.md) | P0-10/P0-11：基线范围、旧车代码、删除授权 | P0 | ⬜ | 1 |
+| [06-git-baseline-deletion.md](./06-git-baseline-deletion.md) | P0-10/P0-11：基线范围、旧车代码、删除授权 | P0 | ✅ S0/Tier A；⏸ 旧车代码 | 1 |
 | [07-supplement-p0.md](./07-supplement-p0.md) | A1/A11/A12/C3/D3：轮径、电机、IMU、.ioc、CAN3 | P0 | ⬜ | 7 |
 
 > 建议先做 **06**（不依赖技术答案，且 S0 已在做）→ **02** → **01** → **03** → **04** → **05** → **07**。

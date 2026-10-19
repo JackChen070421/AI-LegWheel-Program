@@ -1,8 +1,8 @@
 # 项目结构方案（Harness Engineering）— 提案 v0.1
 
 > 日期：2026-10-19  
-> 状态：**提案；S0 已执行（2026-10-19），S1–S4 未执行**。本文不移动、不删除、不改写任何现有文件。  
-> 更新：S0 快照 + git 基线已完成，见 `archive/manifests/S0-BASELINE.md`；tag `pre-structure-20261019`。
+> 状态：**提案；S0/S1 已执行（2026-10-19），S2–S4 未执行**。本文不移动、不删除、不改写任何现有文件。  
+> 更新：S0 快照 + git 基线、S1 结构骨架已完成，见 `archive/manifests/S0-BASELINE.md`、`AGENTS.md`；tag `pre-structure-20261019`、`s0-baseline`。
 > 依据：根目录 `README.md` 的今晚四步；t1（固件/构建）、t2（仿真/资料）、t3（监管审阅）三份简报；Captain 定点复核（`Chassis.cpp:13`、`Chassis.h:52-55`、`vmc.cpp:22-23`、`lqr_coeffs.cpp:6`、`MDK-ARM/LegWheel/LegWheel.hex` 等）。  
 > 约定：**目录/文件名用英文；文档内容用中文；具体资料文件保留中文名**（按你 2026-10-19 的决定）。
 
@@ -180,7 +180,7 @@ LG-AI-process/
 4. `git init`；写 `.gitignore`（规则必须同时命中**迁移前** `codes-chassis/...` 与**迁移后** `firmware/...`，见 §6.2）；用 `git check-ignore -v` 抽查：DSP 源码应被忽略、`DSP/Lib/ARM/arm_cortexM7lfdp_math.lib` **不应**被忽略；首次提交；打 tag `pre-structure-20261019`。
 5. 验证：随机抽 3 个文件对比快照/清单；`LegWheel.hex` SHA-256 与大小（494,095 B）一致；`git status` 干净；Keil 工程能打开。
 
-### S1 只新增（预计 40–60 min，低风险）
+### S1 只新增（预计 40–60 min，低风险）✅ 2026-10-19 已执行
 1. 创建 `docs/00-governance` … `docs/09-references` 骨架；每个目录放 `README.md`（中文，说明“放什么/不放什么/维护者”）。
 2. 创建 `firmware/gimbal/`、`simulation/`、`experiments/{logs,calibration,reports}`、`hardware/{structure,electronics,wiring,bom}`、`tools/`、`archive/{snapshots,legacy,legacy/hex-2026-10-18}`，各放 `README.md` + `.gitkeep`。
 3. 写根 `AGENTS.md`（草案见 §8）。
