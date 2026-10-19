@@ -11,7 +11,7 @@
 | 文件 | 覆盖 | 优先级 | 状态 | 建议顺序 |
 |---|---|---|---|---|
 | [01-k-matrix.md](./01-k-matrix.md) | P0-1/P0-2：K 矩阵来源与生成链 | P0 | ⬜ | 3 |
-| [02-build-entry.md](./02-build-entry.md) | P0-3：唯一构建入口/工具链 | P0 | ⬜ | 2 |
+| [02-build-entry.md](./02-build-entry.md) | P0-3：唯一构建入口/工具链 | P0 | 🔎 部分（工具已查；CMake 待确认） | 2 |
 | [03-mass-parameters.md](./03-mass-parameters.md) | P0-4/P0-5：14.3 kg 口径、0.788 vs 1.067 | P0 | ⬜ | 4 |
 | [04-wheel-track.md](./04-wheel-track.md) | P0-6：轮距定义与三种用法 | P0 | ⬜ | 5 |
 | [05-protocol-estop-state.md](./05-protocol-estop-state.md) | P0-7/8/9：协议、急停、状态映射 | P0 | ⬜ | 6 |

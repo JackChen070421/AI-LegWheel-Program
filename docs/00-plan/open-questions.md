@@ -32,7 +32,7 @@
 |---|---|---|---|
 | P0-1 | **固件实际生效的 K 矩阵是哪一份？** `lqr_coeffs.cpp`、`Algorithm/inc/K_coeffs_normal.h`、还是仿真目录同名文件？ | 固件 `LqrGains` 读 `lqr_coeffs.cpp`；孤儿头文件未被 include；仿真文件数值不同。三份不能混用 | |
 | P0-2 | **K 的生成链用哪条？** 旧链（`k_calc_chuan_real2.m`，Ts=0.001）还是新链（`Variables_and_Equations→Linear_and_CalcMatrix→Num_function→Calc_K_and_fit`，Ts=0.002 + `leg_data` 实测表）？ | 决定以后“重算 K”用哪套脚本、哪组 Q/R | |
-| P0-3 | **唯一构建入口是什么？** Keil、CMake/CLion，还是两者都维护？工具链版本/路径？ | Keil hex 最新（10-18）；CMake 产物停在 10-02；工程根无 CMakeLists；换机不可复现 | |
+| P0-3 | **唯一构建入口是什么？** Keil、CMake/CLion，还是两者都维护？工具链版本/路径？ | Keil hex 最新（10-18）；CMake 产物停在 10-02；工程根无 CMakeLists；换机不可复现 | 部分：Keil 5.38 + CubeMX 6.17 + VSCode 1.142 + ARM GCC 15.3 已确认；**CMake 未找到**；CubeMX 保留；待确认 CMake 具体指什么 |
 | P0-4 | **14.3 kg 的组成口径**：是否 = 11.058（车体）+ 2×1.067（腿）+ 2×0.554（轮）？车体是否含电池/板/线？ | 代码这组数正好凑出 14.3，但没台账；参数表需要唯一口径 | |
 | P0-5 | **`vmc.cpp` 的 `k_m_leg=0.788` 与 `Chassis.h` 的 `LEG_FF_LEG_MASS=1.067` 各是什么？** 哪个用于力前馈/离地检测？ | 两者相差 0.279 kg，直接影响腿支持力/N 估计 | |
 | P0-6 | **`LEG_FF_WHEEL_TRACK=0.4` 的物理定义**：左右轮中心距？半距？为什么代码里同时出现 `2*`、`1*`、`0.5*`？ | 至少一处可能差 2 倍；影响滚转/偏航力与速度换算 | |
@@ -49,7 +49,7 @@
 | A1 | 轮半径实测值？ | 速度/里程计/LQR B 矩阵/离地检测 | 🧪 |
 | A11 | 关节/轮电机型号、减速比、力矩常数？ | 力矩换算/限流 | ⬜ |
 | A12 | IMU 型号/安装/方向/偏置？用 DM IMU 还是 N100？ | 姿态/杠杆臂补偿 | 🧪 |
-| C3 | `.ioc` 是否还用于 CubeMX 重新生成？如何保护用户代码？ | 重新生成会覆盖 `freertos.c` | ⬜ |
+| C3 | `.ioc` 是否还用于 CubeMX 重新生成？如何保护用户代码？ | 重新生成会覆盖 `freertos.c` | 🔎 CubeMX 保留；H7 包缺失；先副本生成再合并 |
 | D3 | CAN3 的 ID/频率/超时/仲裁/bus-off？ | 云台联调安全 | ⬜ |
 
 > **P0 总数 = 速答表 11 条 + 补充 5 条 = 16 条**。分类表里与速答表重复的 P0 项（如 A2/B5、A3/P0-4、A4/P0-5、B6/P0-8、B7/P0-9、C2/P0-3、E8/F2/P0-10、F6/P0-11）只做详细展开，不再重复计数。
@@ -107,9 +107,9 @@
 
 | ID | 问题 | 影响 | 当前证据 | P | 状态 |
 |---|---|---|---|---|---|
-| C1 | 唯一构建入口：Keil / CMake / 两者？ | 换机/CI/回退 | 见 P0-3 | P0 | ⬜ |
-| C2 | 工具链版本与安装路径（ARM GCC 15.2? MDK 5.x? make?）？（P0-3 详细版） | 可复现 | `CMakeCache.txt`、`compile_flags.txt` | P0 | ⬜ |
-| C3 | `.ioc` 是否还用于 CubeMX 重新生成？如何保护用户代码？ | 重新生成会覆盖 `freertos.c` | `.ioc` 08-27 vs `freertos.c` 10-18 | P0 | ⬜ |
+| C1 | 唯一构建入口：Keil / CMake / 两者？ | 换机/CI/回退 | 见 P0-3 | P0 | 🔎 部分：Keil+CubeMX；CMake 待确认 |
+| C2 | 工具链版本与安装路径？（已查：MDK 5.38 / ARMCC 5.06 / ARMCLANG 16、CubeMX >6.17、VSCode 1.142、ARM GCC 15.3；CMake 未找到） | 可复现 | 安装根 `C:\STM32+Vscode+Keil5`（只读）；`CMakeCache.txt`、`compile_flags.txt` | P0 | 🔎 CMake 待确认 |
+| C3 | `.ioc` 是否还用于 CubeMX 重新生成？如何保护用户代码？ | 重新生成会覆盖 `freertos.c` | `.ioc` 08-27 vs `freertos.c` 10-18 | P0 | 🔎 CubeMX 保留；H7 包缺失；不要直接重生成 |
 | C4 | 烧录方式：DAPLink 无线 / ST-Link / JLink？有无脚本/步骤？ | 上手/复现 | `Daplink/README.md` | P1 | ⬜ |
 | C5 | 旧绝对路径（`D:/Github`、`d:/RM-electro-control`）是否要修？还是只记录？ | 换机编译 | `compile_flags.txt`、`_inc_list.txt` | P1 | ⬜ |
 | C6 | `build/` CMake 产物是否保留/可信？ | 清理 | 2026-10-02 停更 | P2 | ⬜ |

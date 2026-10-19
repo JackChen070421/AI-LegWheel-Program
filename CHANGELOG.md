@@ -165,3 +165,36 @@
 - 结构树：`docs/00–09`、`firmware/`、`simulation/`、`hardware/`、`experiments/`、`tools/`、`archive/` 均有 README。
 - 旧 README 已归档；当前 README 可读。
 - 修正：`docs/04-parameters/parameters.md` 质量预算口述值 0.55 的合计应为 **14.292**（原稿误写 13.992）；0.554 精确值仍为 14.300。
+
+---
+
+## 2026-10-19 — 工具链只读检查 + CubeMX 保留
+
+### 用户决定
+
+- **CubeMX 保留**：用于开发板初始化；后续新增/调用通信口可能还要用；
+- 工具安装根：`C:\STM32+Vscode+Keil5`；**agent 只读**，不修改安装路径，只能浏览；
+- 关于 CMake：用户表述与 CubeMX 初始化相关；实际本机未找到 CMake，待确认具体所指（CubeMX 工作流 / `LegWheel/build/` / 另一台机器）。
+
+### 只读检查结果
+
+| 工具 | 版本 |
+|---|---|
+| Keil µVision（UV4） | 5.38.0.0 |
+| ARMCC | 5.06.0.189 |
+| ARMCLANG | 16.0.0（LLVM 16） |
+| STM32CubeMX | >6.17.0-RC5 |
+| VS Code | 1.142.0 |
+| ARM GNU GCC | 15.3.1 |
+| Keil H7 DFP | 4.1.3 |
+| Keil ARM_Compiler 包 | 1.7.2 |
+| CMake | **未找到**（安装根/PATH/常见路径） |
+| CubeMX 固件包 | 仅 F1 1.8.7；**H7 包缺失** |
+
+### 结论/记录
+
+- 未修改 `C:\STM32+Vscode+Keil5` 下任何文件；仅列目录/读版本/执行 `--version`；
+- `.ioc`、`.mxproject`、Keil 工程、`archive/legacy/hex` 均保留；
+- `LegWheel/build/`（CMake 生成物）已在 Tier A 删除；如需恢复，可从 S0 快照取（约 5 MB），但 cache 路径已失效；
+- 更新 `AGENTS.md`（黄金原则 9 + 工具链）、`docs/02-architecture/build-and-flash.md`、`docs/00-plan/todo/02-build-entry.md`、`open-questions.md`、`README.md`；
+- 未改代码/构建配置。

@@ -13,6 +13,7 @@
 6. **`researchs/` 只读**：不修改、不移动、不删除；需要引用时给路径。Tier B 大资料保留但 git 忽略。
 7. **小步提交**：一次一件事；结构变更写 ADR（`docs/07-decisions/`）；每次改动写 `CHANGELOG.md`。
 8. **安全优先**：急停、电机、电源、云台联调相关改动必须先台架验证（轮子离地/限流），不直接上实车。
+9. **工具安装目录只读**：`C:\STM32+Vscode+Keil5` 只允许浏览（列目录/读版本），**不修改、不移动、不写**；Keil/CubeMX/VSCode 的安装/升级/配置由你操作。
 
 ## 1. 项目一句话
 
@@ -45,7 +46,10 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 
 - **参数**：`docs/04-parameters/parameters.md`。用户已确认：整车 14.3 kg、单轮 0.55 kg；其余见文档。
 - **K 矩阵**：当前固件读 `lqr_coeffs.cpp`；另有孤儿副本/仿真副本，**来源未定**（P0-1/2，见 TODO-01）。未确认前不要改 K。
-- **构建**：Keil `MDK-ARM/LegWheel.uvprojx`（S2 前在 `codes-chassis/...`）；唯一已知产物 `MDK-ARM/LegWheel/LegWheel.hex`（494,095 B）。CMake `build/` 已删除，不要依赖；`.ioc` 已漂移，**不要直接重新生成**（会覆盖用户代码）。详见 `docs/02-architecture/build-and-flash.md`。
+- **构建**：Keil MDK 5.38（UV4；ARMCC 5.06 / ARMCLANG 16）`MDK-ARM/LegWheel.uvprojx`（S2 前在 `codes-chassis/...`）；唯一已知产物 `MDK-ARM/LegWheel/LegWheel.hex`（494,095 B）。
+- **本机工具链（2026-10-19 只读检查）**：安装根 `C:\STM32+Vscode+Keil5`（只读）：Keil 5.38、STM32CubeMX >6.17.0-RC5、VS Code 1.142；ARM GNU GCC 15.3.1 在 `C:\Program Files (x86)\Arm\...`；**CMake 未在安装目录/PATH 找到**。
+- **CubeMX**：用于板级初始化；后续新增通信口可能再用；`.ioc`/`.mxproject` 保留。但 `.ioc` 已漂移（08-27 vs freertos 10-18），**不要直接重新生成**；本机 CubeMX 只有 F1 固件包，H7 包缺失。
+- **CMake**：现状见 `docs/02-architecture/build-and-flash.md`；`build/` 是旧机器产物（已删，可从 S0 快照恢复，但缓存路径失效）；是否实际使用 CMake 待确认（TODO-02）。
 - **仿真**：MATLAB/Simulink，当前在 `codes-chassis/轮腿底盘LQR仿真/simulation/`；S2 后迁入 `simulation/chassis-lqr/`。
 - **调试观测**：VOFA 13 路、115200（以代码为准）。
 
