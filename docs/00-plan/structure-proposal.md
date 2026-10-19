@@ -1,7 +1,8 @@
 # 项目结构方案（Harness Engineering）— 提案 v0.1
 
 > 日期：2026-10-19  
-> 状态：**提案，未执行**。本文不移动、不删除、不改写任何现有文件。  
+> 状态：**提案；S0 已执行（2026-10-19），S1–S4 未执行**。本文不移动、不删除、不改写任何现有文件。  
+> 更新：S0 快照 + git 基线已完成，见 `archive/manifests/S0-BASELINE.md`；tag `pre-structure-20261019`。
 > 依据：根目录 `README.md` 的今晚四步；t1（固件/构建）、t2（仿真/资料）、t3（监管审阅）三份简报；Captain 定点复核（`Chassis.cpp:13`、`Chassis.h:52-55`、`vmc.cpp:22-23`、`lqr_coeffs.cpp:6`、`MDK-ARM/LegWheel/LegWheel.hex` 等）。  
 > 约定：**目录/文件名用英文；文档内容用中文；具体资料文件保留中文名**（按你 2026-10-19 的决定）。
 
@@ -256,7 +257,10 @@ LG-AI-process/
 researchs/
 **/Drivers/CMSIS/DSP/*
 !**/Drivers/CMSIS/DSP/Lib/
-!**/Drivers/CMSIS/DSP/Lib/**
+**/Drivers/CMSIS/DSP/Lib/*
+!**/Drivers/CMSIS/DSP/Lib/ARM/
+**/Drivers/CMSIS/DSP/Lib/ARM/*
+!**/Drivers/CMSIS/DSP/Lib/ARM/arm_cortexM7lfdp_math.lib
 **/Drivers/CMSIS/NN/
 **/Drivers/CMSIS/Core_A/
 **/Drivers/CMSIS/docs/
@@ -268,7 +272,7 @@ experiments/logs/*.bin
 archive/snapshots/
 ```
 
-> 注意（F2 修订）：`**/` 前缀让规则在 S0（`codes-chassis/...`）和 S2 后（`firmware/...`）都命中；若只用 `firmware/...`，S0 首次提交会把 Drivers 242 MB（含 DSP 176.7 MB）全部跟踪，Tier B 的“git 忽略”就落空。`DSP/*` 只忽略 DSP 的直接子项，`!DSP/Lib/` + `!DSP/Lib/**` 把 Keil 引用的 `arm_cortexM7lfdp_math.lib` 重新纳入跟踪；提交前必须用 `git check-ignore -v` 验证：DSP 源码应忽略、`DSP/Lib/ARM/arm_cortexM7lfdp_math.lib` 不应忽略。
+> 注意（F2 修订）：`**/` 前缀让规则在 S0（`codes-chassis/...`）和 S2 后（`firmware/...`）都命中；若只用 `firmware/...`，S0 首次提交会把 Drivers 242 MB（含 DSP 176.7 MB）全部跟踪，Tier B 的“git 忽略”就落空。`DSP/*` 忽略源码；`Lib/*` 先忽略全部库，再用 `!Lib/ARM/` + `!Lib/ARM/*` + `!.../arm_cortexM7lfdp_math.lib` 只保留 Keil 引用的那一个（GCC/IAR/其他 ARM 库共 164 MB 不跟踪）。`arm_math.h` 实际来自 `Middlewares/ST/ARM/DSP/Inc/arm_math.h`（必须跟踪）。提交前用 `git check-ignore -v` 验证：DSP 源码/GCC 库应忽略、`DSP/Lib/ARM/arm_cortexM7lfdp_math.lib` 与 Middlewares 的 `arm_math.h` 不应忽略。
 >
 > `researchs/` 整体忽略后，其索引在 `docs/09-references/index.md` 里维护；若你希望 README 也进 git，可改为“只忽略大文件、保留 `*.md`”。这需要你拍板（问题 E1）。
 >

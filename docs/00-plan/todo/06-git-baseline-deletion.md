@@ -1,8 +1,9 @@
 # TODO-06 · Git 基线范围、旧车代码、删除授权
 
-> 状态：🔎 调研中（S0 正在执行）　优先级：P0　负责人：你 + AI  
+> 状态：✅ S0 已完成（2026-10-19）；⏳ 待 P0-11 删除授权、旧车代码/远端  
+> 优先级：P0　负责人：你 + AI  
 > 对应：`open-questions.md` P0-10、P0-11、E1、E2、E8、F1、F2、F6  
-> 关联：`docs/00-plan/structure-proposal.md` §6–§7、`CHANGELOG.md`
+> 关联：`docs/00-plan/structure-proposal.md` §6–§7、`archive/manifests/S0-BASELINE.md`、`CHANGELOG.md`
 
 ## 1. 要解决的问题
 
@@ -11,9 +12,13 @@
 
 ## 2. 当前进展（2026-10-19）
 
-- 正在做 **S0**：全量快照 + manifest + git 初始提交 + tag `pre-structure-20261019`；
-- 快照覆盖 1.7 GB 全部文件（含 hex/视频/3D），git 只跟踪文本资产；
-- **未删除任何文件**；Tier A 的删除要等你授权（见 §4）。
+- ✅ **S0 已完成**：全量快照 + manifest + git 初始提交 + tag `pre-structure-20261019`；
+- ✅ 快照：`archive/snapshots/snapshot-20261019.tar`，1,838,510,080 B，SHA-256 `6ac9cd8b…a75d075`，8,451 条目；
+- ✅ git：`main` / `1d05ac4af853737431aab669c4b4277dbeef31ce` / 770 文件 / pack 24.92 MiB；
+- ✅ hex 留档：`archive/legacy/hex-2026-10-18/LegWheel.hex`（494,095 B，SHA-256 已记）；
+- ✅ 详细记录：`archive/manifests/S0-BASELINE.md`；
+- ⏳ **未删除任何文件**；Tier A 删除要等你授权（P0-11）；
+- ⏳ 旧车代码位置、远端仓库仍待确认（P0-10 剩余部分）。
 
 ## 3. 目前已知（证据）
 
@@ -29,13 +34,13 @@
 
 ## 4. 需要你拍板
 
-| 事项 | 选项 | 建议 |
+| 事项 | 选项 | 当前状态 |
 |---|---|---|
-| git 范围 | A 文本-only + 全量 zip 快照 / B 全量 + LFS | **A**；1.7 GB 二进制不适合进 git |
-| 远端 | 本地 / 私有 GitHub / Gitee / 其他 | 先本地；远端等你的账号/权限 |
-| Tier A 删除 | 立即删 / 归档 3–7 天后删 / 暂不删 | 先归档到 `archive/trash-20261019/`，确认后删 |
-| Tier B | 保留 / 移出工作区 / 删除 | 只移出 git，不删；是否移出工作区看你磁盘 |
-| 旧车代码 | 在哪？是否归档 | 找到后进 `archive/legacy/`，作为参数对比基线 |
+| git 范围 | A 文本-only + 全量快照 / B 全量 + LFS | **已采用 A**（2026-10-19）：770 文件 / pack 24.92 MiB + 1.71 GiB tar 快照 |
+| 远端 | 本地 / 私有 GitHub / Gitee / 其他 | ⏳ 先本地；远端等你确认 |
+| Tier A 删除 | 立即删 / 归档 3–7 天后删 / 暂不删 | ⏳ 待你授权（P0-11）；先归档到 `archive/trash-20261019/` |
+| Tier B | 保留 / 移出工作区 / 删除 | ⏳ 只移出 git，不删；是否移出工作区看磁盘（D 盘剩 15.4 GB） |
+| 旧车代码 | 在哪？是否归档 | ⏳ 未找到；找到后进 `archive/legacy/` |
 
 ## 5. 要回答它，需要做什么
 
@@ -46,11 +51,16 @@
 
 ## 6. 解决后的落地动作
 
-- S0 完成后，在本文件记录：快照路径/大小/SHA-256、manifest 路径、首次提交 hash、tag；
-- Tier A 删除前，把清单复制到 `archive/trash-20261019/` 并保留 3–7 天；
-- 更新 `open-questions.md` P0-10/P0-11/E1/E2/E8/F1/F2/F6；
-- 更新 `CHANGELOG.md`。
+- ✅ S0 已完成，记录见 `archive/manifests/S0-BASELINE.md`：
+  - 快照 `archive/snapshots/snapshot-20261019.tar`（1,838,510,080 B；SHA-256 `6ac9cd8b…a75d075`）；
+  - manifest `archive/manifests/manifest-20261019.csv`（7,147 行）；
+  - git 提交 `1d05ac4af853737431aab669c4b4277dbeef31ce`，tag `pre-structure-20261019`；
+  - hex 留档 `archive/legacy/hex-2026-10-18/LegWheel.hex`（494,095 B）。
+- ⏳ Tier A 删除前，把清单复制到 `archive/trash-20261019/` 并保留 3–7 天；
+- ⏳ 更新 `open-questions.md` P0-10/P0-11/E1/E2/E8/F1/F2/F6；
+- ✅ 更新 `CHANGELOG.md`（S0 段）。
 
 ## 7. 讨论记录
 
 - 2026-10-19：S0 启动；用户确认“可以移动/清理/改 README”，但删除仍需逐项授权。
+- 2026-10-19 20:50：S0 完成（快照 + manifest + git + tag）；未删除任何文件。

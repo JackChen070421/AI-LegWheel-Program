@@ -64,3 +64,36 @@
 ### 待办
 - t5 已 pass，本次文档交付完成。
 - 后续 S0–S4 执行前，仍需用户回答 P0（速答 11 + 补充 5）并确认目录树/删除清单/git 范围。
+
+---
+
+## 2026-10-19 — 用户待办文件夹 + S0 基线
+
+### 新增：用户待办
+- `docs/00-plan/todo/README.md` — 待办索引、状态图例、与 AI 协作提示词
+- `docs/00-plan/todo/01-k-matrix.md` — P0-1/P0-2
+- `docs/00-plan/todo/02-build-entry.md` — P0-3
+- `docs/00-plan/todo/03-mass-parameters.md` — P0-4/P0-5
+- `docs/00-plan/todo/04-wheel-track.md` — P0-6
+- `docs/00-plan/todo/05-protocol-estop-state.md` — P0-7/P0-8/P0-9
+- `docs/00-plan/todo/06-git-baseline-deletion.md` — P0-10/P0-11
+- `docs/00-plan/todo/07-supplement-p0.md` — A1/A11/A12/C3/D3
+- `docs/00-plan/todo/TEMPLATE.md`
+
+### S0 基线（完成）
+- **全量快照**：`archive/snapshots/snapshot-20261019.tar`，1,838,510,080 B，SHA-256 `6ac9cd8b…a75d075`，8,451 条目；排除 `archive/snapshots`、`.git`、`.agent-teams`。
+- **manifest**：`archive/manifests/manifest-20261019.csv`，7,147 行，总字节 1,822,177,166；文本 + hex 记 SHA-256。
+- **Keil 产物留档**：`archive/legacy/hex-2026-10-18/LegWheel.hex`，494,095 B，SHA-256 `c41529ff…1dd9ce`（与源文件一致）。
+- **git 基线**：`main` 首次提交 `1d05ac4af853737431aab669c4b4277dbeef31ce`，tag `pre-structure-20261019`；770 个跟踪文件，pack 24.92 MiB。
+- **`.gitignore`**：跟踪固件源码/必要 HAL/CMSIS/FreeRTOS/文档；忽略 `researchs/`、build/slprj/uvguix、DSP 的 GCC/IAR/其他 ARM 库（164 MB），只保留 `DSP/Lib/ARM/arm_cortexM7lfdp_math.lib`（2.1 MB）；`arm_math.h` 来自 `Middlewares/ST/ARM/DSP/Inc/`（已跟踪）。
+- **记录**：`archive/manifests/S0-BASELINE.md`（快照/清单/回退命令）。
+- **未做**：未删除/移动任何现有文件；未执行 S1/S2；Tier A 删除仍等 P0-11 授权。
+
+### 验证
+- `tar -tf` 退出码 0；快照关键文件存在、排除项不存在；hex 源/留档 SHA-256 一致。
+- `git status` clean；`git check-ignore` 对 researchs/build/DSP 源码/GCC 库/源 hex 命中，对 DSP ARM lib / Middlewares arm_math.h / archive hex 不命中。
+- 提交后 `git ls-files` 770；无 researchs/build/uvguix/zip/mp4/sldasm 被跟踪。
+
+### 待办
+- S0 报告与 `.gitignore` 细化将作为第二次提交（`docs: record S0 baseline`）；tag 保持在首次提交。
+- Tier A 删除、旧车代码位置、远端、S1 是否执行，等用户决定。
