@@ -8,7 +8,7 @@
 1. **先快照，后改动**：任何删除、迁移、重构前必须有快照或 git 提交；删除清单写进 `CHANGELOG.md`，并能从 `archive/manifests/` 回退。
 2. **Tier A 不留在工作区**：可再生的 `build/`、`*.uvguix.*`、`slprj/`、`tmp/`、日志、重复文件、空文件，发现即清理；不提交、不长期保留（2026-10-19 已删除一批，见 `archive/manifests/TIER-A-DELETION-20261019.*`）。
 3. **参考资料隔离**：旧车代码、历史版本、外部项目统一放 `archive/legacy/` 或 `researchs/`；未确认前**不并入当前工作区**，避免干扰主线。当前旧车代码尚未提供（见 `docs/00-plan/todo/06-git-baseline-deletion.md`）。
-4. **单一事实源**：参数看 `docs/04-parameters/parameters.md`；K 矩阵看 `docs/03-theory/k-matrix.md`（待建）；构建看 `docs/02-architecture/build-and-flash.md`。其他文档只链接，不复制数值。
+4. **单一事实源**：参数看 `docs/04-parameters/parameters.md`；K 矩阵看 `docs/03-theory/k-matrix.md`（草案）；构建看 `docs/02-architecture/build-and-flash.md`。其他文档只链接，不复制数值。
 5. **不编造数据**：每个数值/结论给 `path:line`、实测日期/条件，或注明“用户口述 + 日期”；不确定写 `TBD` 并进 `docs/00-plan/open-questions.md`。
 6. **`researchs/` 只读**：不修改、不移动、不删除；需要引用时给路径。Tier B 大资料保留但 git 忽略。
 7. **小步提交**：一次一件事；结构变更写 ADR（`docs/07-decisions/`）；每次改动写 `CHANGELOG.md`。
@@ -39,6 +39,7 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 | `researchs/` | 外部参考/厂商资料（只读） | 原地保留；索引在 `docs/09-references/index.md` |
 | `hardware/` | 我们自己的结构/电气/BOM/接线 | 预留 |
 | `experiments/` | 实测日志、标定、报告 | 预留 |
+| `tests/` | Host 单元测试/协议测试/日志回放 | 预留 |
 | `tools/` | 构建/烧录/日志解析/文档抽取脚本 | 预留 |
 | `archive/` | 快照、legacy、Tier A 记录 | 已有 S0 快照与删除记录 |
 
@@ -46,8 +47,8 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 
 - **参数**：`docs/04-parameters/parameters.md`。用户已确认：整车 14.3 kg、单轮 0.55 kg；其余见文档。
 - **K 矩阵**：当前固件读 `lqr_coeffs.cpp`；另有孤儿副本/仿真副本，**来源未定**（P0-1/2，见 TODO-01）。未确认前不要改 K。
-- **构建**：Keil MDK 5.38（UV4；ARMCC 5.06 / ARMCLANG 16）`firmware/LegWheel/MDK-ARM/LegWheel.uvprojx`；唯一已知产物 `firmware/LegWheel/MDK-ARM/LegWheel/LegWheel.hex`（494,095 B）。
-- **本机工具链（2026-10-19 只读检查）**：安装根 `C:\STM32+Vscode+Keil5`（只读）：Keil 5.38、STM32CubeMX >6.17.0-RC5、VS Code 1.142；ARM GNU GCC 15.3.1 在 `C:\Program Files (x86)\Arm\...`；**CMake 未在安装目录/PATH 找到**。
+- **构建**：Keil MDK 5.38（UV4；工程实际用 **ARMCLANG V6.19 / LLVM 16**，`pCCUsed=6190000::V6.19::ARMCLANG`）`firmware/LegWheel/MDK-ARM/LegWheel.uvprojx`；唯一已知产物 `firmware/LegWheel/MDK-ARM/LegWheel/LegWheel.hex`（494,095 B）。**Keil Build 已由用户验证通过（2026-10-19）**。
+- **本机工具链（2026-10-19 只读检查）**：安装根 `C:\STM32+Vscode+Keil5`（只读）：Keil 5.38、ARM Compiler 6.19（ARMCLANG/LLVM 16）、STM32CubeMX >6.17.0-RC5、VS Code 1.142；ARM GNU GCC 15.3.1 在 `C:\Program Files (x86)\Arm\...`；**CMake 未在安装目录/PATH 找到**。
 - **CubeMX**：用于板级初始化；后续新增通信口可能再用；`.ioc`/`.mxproject` 保留。但 `.ioc` 已漂移（08-27 vs freertos 10-18），**不要直接重新生成**；本机 CubeMX 只有 F1 固件包，H7 包缺失。
 - **CMake**：未安装/不启用（用户 2026-10-19 确认可能理解错；`build/` 删除即可、不恢复）；当前以 Keil + CubeMX 为准。
 - **仿真**：MATLAB/Simulink，`simulation/chassis-lqr/`。

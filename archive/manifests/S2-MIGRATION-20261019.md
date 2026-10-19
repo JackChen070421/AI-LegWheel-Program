@@ -76,4 +76,4 @@ tar -xf archive\snapshots\snapshot-20261019.tar -C <临时目录>
 - [x] git 提交：`d03f9dffa95d97c275a236f382f439210af3c67c`（`struct: migrate firmware and simulation into target tree (S2)`）
 - [x] tag：`s2-migration`（最终记录 commit）
 - [x] final manifest 重算（7,089 行 / 1,407,786,484 B）
-- [ ] Keil 打开/编译验证（需要你或后续任务；19 个 include 目录失效待修）
+- [x] Keil 打开/编译验证：**2026-10-19 用户确认可正常编译**；19 个 include 目录失效不影响当前 Build（待清理）

@@ -1,6 +1,6 @@
 # 构建与烧录（Build & Flash）
 
-> 最后更新：2026-10-19（工具链只读检查）  
+> 最后更新：2026-10-19（Keil Build 已验证）  
 > 状态：**Keil + CubeMX 为当前事实工作流**；CMake 未安装/不启用（用户 2026-10-19）；烧录步骤待确认（C4）。  
 > 安装根 `C:\STM32+Vscode+Keil5` **只读**：只浏览/读版本，不修改、不移动、不写（AGENTS.md 黄金原则 9）。
 
@@ -9,8 +9,8 @@
 | 工具 | 路径 | 版本 | 用途/备注 |
 |---|---|---|---|
 | Keil µVision | `C:\STM32+Vscode+Keil5\MDK\Core\UV4\UV4.exe` | **5.38.0.0** | 编译/烧录入口 |
-| ARMCC | `...\MDK\Core\ARM\ARMCC\bin\armcc.exe` | 5.06.0.189 | 旧编译器；工程可能用 ARMCLANG |
-| ARMCLANG | `...\MDK\Core\ARM\ARMCLANG\bin\armclang.exe` | 16.0.0（LLVM 16） | AC6 编译器 |
+| ARMCC | `...\MDK\Core\ARM\ARMCC\bin\armcc.exe` | 5.06.0.189 | 旧编译器（当前工程未用） |
+| ARMCLANG | `...\MDK\Core\ARM\ARMCLANG\bin\armclang.exe` | 16.0.0（LLVM 16） | **工程实际使用 ARM Compiler 6.19 / ARMCLANG** |
 | STM32CubeMX | `...\STM32CubeMx\Core\STM32CubeMX.exe` | **>6.17.0-RC5** | 板级初始化/外设配置；`.ioc` 保留 |
 | VS Code | `...\VScode\Core\Code.exe` | 1.142.0 | 编辑器/Keil Assistant（待确认） |
 | ARM GNU GCC | `C:\Program Files (x86)\Arm\GNU Toolchain mingw-w64-i686-arm-none-eabi\bin\arm-none-eabi-gcc.exe` | **15.3.1** | 不在安装根；CMake 旧 cache 指向 15.2（失效） |
@@ -27,12 +27,20 @@
 |---|---|
 | 工程 | `firmware/LegWheel/MDK-ARM/LegWheel.uvprojx` |
 | 器件 | STM32H723VGTx；H7 DFP 4.1.3 |
-| 编译器 | ARMCC 5.06 / ARMCLANG 16（工程实际用哪个待确认） |
+| 编译器 | **ARMCLANG V6.19 / LLVM 16**（`pCCUsed=6190000::V6.19::ARMCLANG`） |
 | 输出 | `MDK-ARM/LegWheel/LegWheel.hex` |
 | 已知产物 | 494,095 B，2026-10-18 21:38；S0 已留档 `archive/legacy/hex-2026-10-18/LegWheel.hex` |
+| Build 验证 | ✅ 2026-10-19 用户确认 Keil 可正常编译 |
 | 烧录 | DAPLink 无线 / ST-Link（步骤 TBD，C4） |
 
-### 构建步骤（待你确认后补齐细节）
+### Keil include 路径（2026-10-19 检查）
+
+- `uvprojx` 共 34 个 include 目录：**15 个存在、19 个不存在**；
+- 19 个缺失目录都是旧“按设备分目录”布局，当前头文件统一在 `Devices/inc`、`Bsp/inc` 等，Build 已通过说明不影响编译；
+- 缺失列表：`../Devices/{WS2812,IBUS,IMU,Saber_C3,M1505B,SBUS,M6020,DM8009P,M3508,tpid,VOFA+,N100,dji_motor,GM6020,M2006,XRobot_IMU}`、`../Bsp/{UART,DWT}`、`..\Devices\SDM02`；
+- 修复计划：删除这 19 条（保留 15 条有效）；需用户确认 CubeMX 是否可能重新生成 `uvprojx`（TODO-02）。
+
+### 构建步骤（已由用户验证）
 
 1. 关闭占用（Keil 会锁文件）；
 2. 打开 `LegWheel.uvprojx`（可经 VSCode Keil Assistant，实际编译仍由 UV4 完成）；
@@ -90,10 +98,11 @@
 
 ## 8. 待确认（P0-3/C1/C2/C3/C4）
 
-1. 实际编译是 Keil UV4，还是 VSCode/Keil Assistant 触发？工程用 ARMCC 还是 ARMCLANG？
+1. 日常是直接开 Keil，还是 VSCode/Keil Assistant 触发 UV4？（编译器已确认 ARMCLANG V6.19）
 2. 烧录用 DAPLink 无线还是 ST-Link？步骤？
 3. **CMake 已澄清（2026-10-19）**：可能是理解错；`build/` 删除即可、不恢复；CMake 未安装/不启用。以后真要用再单独开任务。
-4. CubeMX 是否继续用于新增通信口？H7 固件包是否要安装（你操作）？
-5. 是否需要修复 `archive/legacy/stale-configs/compile_flags.txt` / `_inc_list.txt` 并放回（或改为相对路径）？
+4. **CubeMX 工作流**：以后加通信口时，是 CubeMX 重新生成 Keil 工程（可能覆盖 `uvprojx`），还是只生成代码、手动合并？这决定 include 路径修复是否会被覆盖。
+5. 是否允许删除 `uvprojx` 里 19 条失效 include 目录（保留 15 条有效），改前备份、改后你 Build 验证？
+6. 是否使用 VSCode IntelliSense？如果不用，归档/删除 `.vscode/c_cpp_properties.json`、`compile_flags.txt`、`_inc_list.txt`；如果用，按当前路径重生成（需知道你打开哪个目录）。
 
 > 以上未确认前，不改构建配置；只记录。见 [TODO-02](../00-plan/todo/02-build-entry.md)。

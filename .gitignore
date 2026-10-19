@@ -13,6 +13,8 @@
 **/*.hex
 **/*.elf
 **/*.bin
+**/*.htm
+**/*.build_log.htm
 **/*.o
 **/*.d
 **/*.crf

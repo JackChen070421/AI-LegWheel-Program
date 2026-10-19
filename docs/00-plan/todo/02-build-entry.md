@@ -1,6 +1,6 @@
 # TODO-02 · 构建入口与工具链（Keil / CubeMX / CMake）
 
-> 状态：🔎 部分确认（工具已查；CMake 已澄清；剩烧录/编译器确认）　优先级：P0　负责人：你 + AI  
+> 状态：🔎 部分确认（**Keil Build 已验证 2026-10-19**；剩 include 清理/VSCode/CubeMX 工作流/烧录）　优先级：P0　负责人：你 + AI  
 > 对应：`open-questions.md` P0-3、C1、C2、C3、C4、C5、C6  
 > 关联：[`docs/02-architecture/build-and-flash.md`](../../02-architecture/build-and-flash.md)
 
@@ -33,7 +33,7 @@
 |---|---|
 | Keil µVision | `C:\STM32+Vscode+Keil5\MDK\Core\UV4\UV4.exe`，**5.38.0.0** |
 | ARMCC | 5.06.0.189 |
-| ARMCLANG | 16.0.0（LLVM 16） |
+| ARMCLANG | ARM Compiler **6.19** / LLVM 16（`pCCUsed=6190000::V6.19::ARMCLANG`） |
 | Keil H7 器件包 | `STM32H7xx_DFP` 4.1.3 |
 | Keil ARM_Compiler 包 | 1.7.2 |
 | STM32CubeMX | `...\STM32CubeMx\Core\STM32CubeMX.exe`，**>6.17.0-RC5** |
@@ -44,7 +44,8 @@
 | 工程 | `MDK-ARM/LegWheel.uvprojx`；`CreateHexFile=1`；hex 494,095 B / 10-18 |
 | `.ioc` 漂移 | `LegWheel.ioc` 2026-08-27 vs `freertos.c` 2026-10-18 |
 | 旧路径（已归档） | `archive/legacy/stale-configs/compile_flags.txt` → `d:\RM-electro-control\...`；`_inc_list.txt` → `D:/Github/...` |
-| Keil include 目录 | 114 个 `<FilePath>` 全部存在，但 **19 个 include 目录不存在**（旧“按设备分目录”布局） | 2026-10-19 迁移审计 |
+| Keil include 目录 | 34 个：**15 存在 / 19 不存在**（旧“按设备分目录”布局）；`<FilePath>` 114 个全部存在 | 2026-10-19 审计 |
+| Keil Build | ✅ **用户确认可正常编译（2026-10-19）** | 用户口述 |
 | `build/` | 2026-10-02 的 CMake 产物；Tier A 已删；可在 S0 快照中恢复（5 MB），但 cache 指向已不存在的 `C:/Program Files/toolchain/...`、`C:/msys64` |
 
 ## 5. 可选方案
@@ -58,15 +59,47 @@
 
 ## 6. 要回答它，需要做什么
 
-1. 确认：日常是 **VSCode + Keil Assistant 触发 UV4**，还是直接开 Keil？工程实际用 ARMCC 5.06 还是 ARMCLANG 16？
+1. **Keil Build 已确认通过（2026-10-19）**：日常是直接开 Keil，还是 VSCode/Keil Assistant 触发 UV4？（编译器已确认 ARMCLANG 6.19）
 2. 确认烧录方式（DAPLink 无线 / ST-Link / JLink）与步骤；
 3. **CMake 已澄清（2026-10-19）**：可能是理解错；`firmware/LegWheel/build/` 删除即可、不恢复；CMake 未安装/不启用。以后真要用再单独开任务。
 4. 若继续用 CubeMX 改 H7 外设：需要安装 **STM32Cube_FW_H7**（你操作；安装目录只读）；并约定“先复制 `.ioc`/工程到临时目录生成，再人工合并”的流程。
 5. 决定是否修 `archive/legacy/stale-configs/compile_flags.txt`/`_inc_list.txt`（或只记录、不改），以及是否修 Keil 的 19 个失效 include 目录。
 
+### 6.1 需要你确认（阻塞我动手）
+
+1. **允许直接改 `uvprojx` 吗？** 计划：备份 `LegWheel.uvprojx.bak-20261019` → 只删 19 条失效 include（保留 15 条）→ 你 Build 一次验证；失败则回退备份。
+2. **CubeMX 工作流**：以后加通信口时，是 (A) CubeMX 重新生成 Keil 工程（可能覆盖 `uvprojx`），还是 (B) 只生成代码、手动合并？如果是 A，我改成“生成后补丁脚本”，不直接改工程。
+3. **VSCode/IntelliSense 用不用？** 用 → 我重生成 `.vscode/c_cpp_properties.json`（需要知道 VSCode 打开的是 `firmware/LegWheel`、`MDK-ARM` 还是仓库根）；不用 → 归档/删除这份旧配置。
+4. **`compile_flags.txt`/`_inc_list.txt` 是否重生成**（给 clangd/IntelliSense）？还是保持归档？
+5. **烧录方式**：DAPLink 无线 / ST-Link / JLink？不影响 include 清理，但 TODO-02 闭环需要。
+6. **编译器确认**：工程实际是 ARMCLANG 6.19；以后是否只维护 ARMCLANG（不再管 ARMCC 5.06）？
+
+### 6.2 拟保留的 15 条 include（删除 19 条后）
+
+```text
+../Core/Inc
+../Drivers/STM32H7xx_HAL_Driver/Inc
+../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
+../Middlewares/Third_Party/FreeRTOS/Source/include
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2
+../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F
+../Drivers/CMSIS/Device/ST/STM32H7xx/Include
+../Drivers/CMSIS/Include
+..\Applications\inc
+../Algorithm
+../Algorithm/inc
+../Drivers/CMSIS/DSP
+..\Bsp\inc
+../Middlewares/ST/ARM/DSP/Inc
+..\Devices\inc
+```
+
+> 删除的 19 条：`../Devices/{WS2812,IBUS,IMU,Saber_C3,M1505B,SBUS,M6020,DM8009P,M3508,tpid,VOFA+,N100,dji_motor,GM6020,M2006,XRobot_IMU}`、`../Bsp/{UART,DWT}`、`..\Devices\SDM02`。
+
 ## 7. 解决后的落地动作
 
 - 更新 [`build-and-flash.md`](../../02-architecture/build-and-flash.md)：入口、版本、烧录步骤、CubeMX 流程、CMake 现状；
+- 改 `uvprojx` 前备份 `LegWheel.uvprojx.bak-20261019`；改后由用户 Build 验证；失败则回退；
 - 如果恢复 `build/`：在 `archive/manifests/` 记录来源/原因，并在 `.gitignore` 保持忽略；
 - 更新 `open-questions.md` P0-3/C1/C2/C3/C4/C5/C6；
 - 在 `CHANGELOG.md` 记录决定；
@@ -77,3 +110,4 @@
 - 2026-10-19：S0 已把 `LegWheel.hex` 纳入快照；构建入口待确认。
 - 2026-10-19：用户确认 CubeMX 保留（板级初始化/后续通信口），工具安装根 `C:\STM32+Vscode+Keil5` 只读；本机检查到 Keil 5.38 / CubeMX 6.17 / VSCode 1.142 / ARM GCC 15.3，CMake 未找到；H7 固件包缺失。
 - 2026-10-19 后续：用户确认 CMake 可能是理解错，`build/` 删除即可、不恢复；当前按 Keil + CubeMX 记录。
+- 2026-10-19：**用户确认 Keil 可正常编译**；工程实际编译器 ARMCLANG 6.19；34 个 include 中 19 个失效（Build 不受影响）。

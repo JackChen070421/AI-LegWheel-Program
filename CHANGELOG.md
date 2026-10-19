@@ -224,9 +224,8 @@
 
 ### 未做
 
-- git commit/tag（下一步立即做）；
-- Keil 打开/编译验证（需要你或后续任务）；
-- Tier B 未删。
+- Tier B 未删（按计划保留）；
+- git commit/tag、Keil 编译验证均已完成（见下条审计记录）。
 
 ### 记录
 
@@ -236,3 +235,24 @@
 - `archive/manifests/S2-CLEANUP-20261019.csv`
 - `archive/manifests/S2-MIGRATION-20261019.md`
 - `docs/00-plan/supervisor-review-s2.md`
+
+---
+
+## 2026-10-19 — Keil Build 验证 + 结构审计
+
+### 验证/更新
+
+- 用户确认 **Keil 可正常编译**（2026-10-19）；
+- 工程实际编译器：**ARMCLANG V6.19 / LLVM 16**（`pCCUsed=6190000::V6.19::ARMCLANG`）；
+- `uvprojx` 34 个 include：**15 存在 / 19 不存在**（旧“按设备分目录”布局；Build 不受影响，待清理）；
+- 新增 `docs/03-theory/k-matrix.md`（K 唯一事实源草案）；
+- 新增 `tests/README.md`（Host/协议/日志回放占位）；
+- `.gitignore` 补 `*.htm`、`*.build_log.htm`、`*.slxc`、`MathWorks/graphicsState.bin`、`.claude/`；
+- 删除 Keil 生成的 `LegWheel.htm`、`LegWheel.build_log.htm`（Build 可再生）；
+- 新增 `docs/00-plan/structure-audit-20261019.md`（结构审计：P0/P1/P2 findings + harness 评分卡）；
+- 更新 AGENTS/README/build-and-flash/TODO-02/open-questions/roadmap 的编译状态与 include 信息。
+
+### 待办
+
+- TODO-02 的 6 个问题（是否允许改 `uvprojx`、CubeMX 工作流、VSCode/IntelliSense、compile_flags、烧录、ARMCLANG 唯一化）；
+- K 来源（TODO-01）、can-protocol/state-machine、hardware-overview 更新。

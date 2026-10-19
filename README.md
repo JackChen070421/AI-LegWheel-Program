@@ -41,7 +41,7 @@ RoboMaster 轮腿平衡步兵：两条腿 + 两个驱动轮，靠 LQR/VMC 保持
 
 ### 编译 / 烧录（Keil）
 
-> 本机工具（2026-10-19 只读检查）：Keil MDK 5.38 + STM32CubeMX >6.17 + VS Code 1.142 + ARM GNU GCC 15.3；安装根 `C:\STM32+Vscode+Keil5`（**只读**）。CMake 未安装/不启用；`build/` 已删（删除即可，不恢复）。CubeMX 用于板级初始化、保留 `.ioc`；不要直接重新生成。
+> 本机工具（2026-10-19 只读检查）：Keil MDK 5.38（ARMCLANG 6.19）+ STM32CubeMX >6.17 + VS Code 1.142 + ARM GNU GCC 15.3；安装根 `C:\STM32+Vscode+Keil5`（**只读**）。CMake 未安装/不启用；`build/` 已删（删除即可，不恢复）。CubeMX 用于板级初始化、保留 `.ioc`；不要直接重新生成。**Keil Build 已由用户验证通过（2026-10-19）**。
 
 1. 打开 `firmware/LegWheel/MDK-ARM/LegWheel.uvprojx`；
 2. Build；产物在 `MDK-ARM/LegWheel/LegWheel.hex`（S0 已留档 494,095 B）；
@@ -69,7 +69,7 @@ VOFA 13 路、115200（以代码为准）；日志/标定以后放 `experiments/
 | `simulation/chassis-lqr/` | MATLAB/Simulink LQR 链路 |
 | `researchs/` | 外部参考/厂商资料（只读，原地） |
 | `docs/` | 文档中心（00–09） |
-| `hardware/`、`experiments/`、`tools/`、`archive/` | 硬件/实验/工具/快照（新建/预留） |
+| `hardware/`、`experiments/`、`tests/`、`tools/`、`archive/` | 硬件/实验/测试/工具/快照（新建/预留） |
 
 ## 7. 文档地图
 
@@ -78,6 +78,7 @@ VOFA 13 路、115200（以代码为准）；日志/标定以后放 `experiments/
 | [`AGENTS.md`](AGENTS.md) | agent 入口 + 黄金原则 |
 | [`docs/01-product/overview.md`](docs/01-product/overview.md) | 目标、阶段、验收 |
 | [`docs/02-architecture/system.md`](docs/02-architecture/system.md) | 软硬件/控制/通信结构 |
+| [`docs/03-theory/k-matrix.md`](docs/03-theory/k-matrix.md) | K 三份候选/来源（草案） |
 | [`docs/04-parameters/parameters.md`](docs/04-parameters/parameters.md) | 参数台账（唯一事实源） |
 | [`docs/00-plan/open-questions.md`](docs/00-plan/open-questions.md) | 16 条 P0 问题清单 |
 | [`docs/00-plan/todo/`](docs/00-plan/todo/README.md) | 逐项解决的待办 |

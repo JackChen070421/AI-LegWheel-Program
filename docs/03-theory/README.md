@@ -7,7 +7,7 @@
 
 | 文件 | 内容 | 状态 |
 |---|---|---|
-| `k-matrix.md` | K 三份候选、生效来源、生成链、Q/R、Ts、腿长拟合、复现命令 | **待写**（P0-1/2，[TODO-01](../00-plan/todo/01-k-matrix.md)） |
+| [`k-matrix.md`](./k-matrix.md) | K 三份候选、生效来源、生成链、Q/R、Ts、腿长拟合、复现命令 | **草案**（P0-1/2，[TODO-01](../00-plan/todo/01-k-matrix.md)） |
 | `vmc-lqr-leso.md` | VMC 腿长/腿角映射、LQR 状态/输入、LESO 观测器 | 待写（S4） |
 | `state-machine.md` | 7 状态 + 子状态、进入/退出、优先级、急停、线上映射 | 待写（P0-7/8/9，[TODO-05](../00-plan/todo/05-protocol-estop-state.md)） |
 | `kinematics.md` | 五连杆几何、正逆解、轮距/腿长量纲 | 待写（P0-6，[TODO-04](../00-plan/todo/04-wheel-track.md)） |

@@ -32,7 +32,7 @@
 |---|---|---|---|
 | P0-1 | **固件实际生效的 K 矩阵是哪一份？** `lqr_coeffs.cpp`、`archive/legacy/k-evidence/K_coeffs_normal.h`、还是 `simulation/chassis-lqr/K_coeffs_normal.h`？ | 固件 `LqrGains` 读 `lqr_coeffs.cpp`；孤儿头文件未被 include；仿真文件数值不同。三份不能混用 | |
 | P0-2 | **K 的生成链用哪条？** 旧链（`k_calc_chuan_real2.m`，Ts=0.001）还是新链（`Variables_and_Equations→Linear_and_CalcMatrix→Num_function→Calc_K_and_fit`，Ts=0.002 + `leg_data` 实测表）？ | 决定以后“重算 K”用哪套脚本、哪组 Q/R | |
-| P0-3 | **唯一构建入口是什么？** Keil、CMake/CLion，还是两者都维护？工具链版本/路径？ | Keil hex 最新（10-18）；CMake 产物停在 10-02；工程根无 CMakeLists；换机不可复现 | ✅ 当前：**Keil 编译/烧录 + CubeMX 板级初始化**；工具版本已记录；CMake 未安装/不启用（用户 2026-10-19 确认可能理解错，`build/` 删除即可） |
+| P0-3 | **唯一构建入口是什么？** Keil、CMake/CLion，还是两者都维护？工具链版本/路径？ | Keil hex 最新（10-18）；CMake 产物停在 10-02；工程根无 CMakeLists；换机不可复现 | ✅ 当前：**Keil 编译/烧录（ARMCLANG 6.19）+ CubeMX 板级初始化**；Build 已验证 2026-10-19；CMake 未安装/不启用 |
 | P0-4 | **14.3 kg 的组成口径**：是否 = 11.058（车体）+ 2×1.067（腿）+ 2×0.554（轮）？车体是否含电池/板/线？ | 代码这组数正好凑出 14.3，但没台账；参数表需要唯一口径 | |
 | P0-5 | **`vmc.cpp` 的 `k_m_leg=0.788` 与 `Chassis.h` 的 `LEG_FF_LEG_MASS=1.067` 各是什么？** 哪个用于力前馈/离地检测？ | 两者相差 0.279 kg，直接影响腿支持力/N 估计 | |
 | P0-6 | **`LEG_FF_WHEEL_TRACK=0.4` 的物理定义**：左右轮中心距？半距？为什么代码里同时出现 `2*`、`1*`、`0.5*`？ | 至少一处可能差 2 倍；影响滚转/偏航力与速度换算 | |
@@ -107,11 +107,11 @@
 
 | ID | 问题 | 影响 | 当前证据 | P | 状态 |
 |---|---|---|---|---|---|
-| C1 | 唯一构建入口：Keil / CMake / 两者？ | 换机/CI/回退 | 见 P0-3 | P0 | ✅ Keil+CubeMX；CMake 不启用（2026-10-19） |
-| C2 | 工具链版本与安装路径？（已查：MDK 5.38 / ARMCC 5.06 / ARMCLANG 16、CubeMX >6.17、VSCode 1.142、ARM GCC 15.3；CMake 未安装） | 可复现 | 安装根 `C:\STM32+Vscode+Keil5`（只读）；`archive/legacy/stale-configs/`、`CMakeCache.txt` | P0 | ✅ 版本已记录；CMake 不启用 |
+| C1 | 唯一构建入口：Keil / CMake / 两者？ | 换机/CI/回退 | 见 P0-3 | P0 | ✅ Keil+CubeMX；Build 已验证（2026-10-19） |
+| C2 | 工具链版本与安装路径？（已查：MDK 5.38 / ARMCLANG 6.19 / CubeMX >6.17 / VSCode 1.142 / ARM GCC 15.3；CMake 未安装） | 可复现 | 安装根 `C:\STM32+Vscode+Keil5`（只读）；`archive/legacy/stale-configs/` | P0 | ✅ 版本已记录；Build 通过 |
 | C3 | `.ioc` 是否还用于 CubeMX 重新生成？如何保护用户代码？ | 重新生成会覆盖 `freertos.c` | `.ioc` 08-27 vs `freertos.c` 10-18 | P0 | 🔎 CubeMX 保留；H7 包缺失；不要直接重生成 |
 | C4 | 烧录方式：DAPLink 无线 / ST-Link / JLink？有无脚本/步骤？ | 上手/复现 | `Daplink/README.md` | P1 | ⬜ |
-| C5 | 旧绝对路径（`D:/Github`、`d:/RM-electro-control`）是否要修？还是只记录？ | 换机编译 | `archive/legacy/stale-configs/{compile_flags.txt,_inc_list.txt}`；Keil 19 个 include 目录失效 | P1 | ⬜ |
+| C5 | 旧绝对路径（`D:/Github`、`d:/RM-electro-control`）是否要修？还是只记录？ | 换机编译 | `archive/legacy/stale-configs/{compile_flags.txt,_inc_list.txt}`；Keil 34 include 中 19 个失效 | P1 | ⬜ |
 | C6 | `build/` CMake 产物是否保留/可信？ | 清理 | 2026-10-02 停更 | P2 | ⬜ |
 | C7 | VOFA：13 路数据、115200、上位机配置在哪？ | 调试/实验记录 | `vofa.c`、`freertos.c` | P1 | ⬜ |
 | C8 | 编译警告等级、静态分析（clang-tidy/cppcheck）是否要做？ | 质量门 | 无 | P2 | ⬜ |
