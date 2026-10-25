@@ -7,6 +7,7 @@
 | 主题 | 位置 |
 |---|---|
 | agent 入口 + 黄金原则 | [`AGENTS.md`](../../AGENTS.md) |
+| 用户指令 → 固定动作（快捷指令） | [`SHORTCUT.md`](../../SHORTCUT.md) |
 | 执行纪律/防卡死/提示词 | [`../00-plan/agent-execution-policy.md`](../00-plan/agent-execution-policy.md) |
 | 结构提案 | [`../00-plan/structure-proposal.md`](../00-plan/structure-proposal.md) |
 | 变更记录 | [`CHANGELOG.md`](../../CHANGELOG.md) |
@@ -22,7 +23,7 @@
 
 ## 记录规则
 
-1. **每次改动**写 `CHANGELOG.md`（时间、类型、内容、验证、回退）；
+1. **每次改动**写 `CHANGELOG.md`（时间、类型、内容、验证、回退）；**倒序排列：最新在上**；
 2. **结构/构建/参数来源**变更写 ADR（`docs/07-decisions/`）；
 3. **删除/迁移**前有快照或 git 提交；删除清单进 `archive/manifests/`；
 4. **实验**用 `docs/05-experiments/test-log-template.md`；
