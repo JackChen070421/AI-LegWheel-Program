@@ -16,12 +16,18 @@
 git switch -c <type>/<slug>      # 在 main 上必须先建分支，否则开不了 PR
 git add <文件1> <文件2>          # 逐个 add；不要 -A（Keil 的 uvprojx/uvoptx 常驻假脏）
 git commit -m "<type>: <摘要>"   # type: feat / fix / docs / struct / chore
-python tools/pr.py --check       # 验 token（首次或换 token 时跑）
-python tools/pr.py               # 推送 + 建 PR，输出 PR 链接
 ```
 
-- token：`%USERPROFILE%\.dsh\secrets\github-token.txt`（单行，**勿放仓库内**）或环境变量 `GITHUB_TOKEN`；需 `Contents: write` + `Pull requests: write`。
-- 无 token 时退回手动：`git push -u origin <分支>`，再到 `compare/main...<分支>` 点 Create pull request；本机 schannel 坏（`SEC_E_NO_CREDENTIALS`），git 报错时加 `-c http.sslbackend=openssl` —— `tools/pr.py` 已内置。
+推送（token 从仓库外的 `%USERPROFILE%\.dsh\secrets\github-token.txt` 读入，**不写进仓库、不回显**）：
+
+```powershell
+git -c credential.helper= push https://x-access-token:<token>@github.com/JackChen070421/AI-LegWheel-Program.git HEAD:refs/heads/<分支>
+```
+
+建 PR：打开 `https://github.com/JackChen070421/AI-LegWheel-Program/compare/main...<分支>?expand=1` → **Create pull request**；也可由 AI 用一次性脚本调 GitHub API 建（脚本不落仓库）。
+
+- 本机 schannel 坏（`SEC_E_NO_CREDENTIALS`），git 连 GitHub 一律加 `-c http.sslbackend=openssl`（仓库级 `.git/config` 已配，无需每次写）。
+- 无 token 时退回：把上面的推送命令交给用户，在他自己的终端执行。
 
 **回报内容**：commit hash + 分支名 + PR 链接 + `CHANGELOG.md` 是否已记一条。
 

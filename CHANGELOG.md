@@ -6,6 +6,42 @@
 
 ---
 
+## 2026-10-26 — PR #1 建成；按维护者意见移除 tools/pr.py
+
+### 结果
+
+- **PR #1 已创建并开放**：https://github.com/JackChen070421/AI-LegWheel-Program/pull/1
+  （2026-10-26 16:10:21 +08 创建，head `docs/shortcut-md`，base `main@651b64f`）；
+- 端到端验证：token 为 classic、scope `repo`、账号 `Koahoshi`，对仓库 `permissions.push = true`；推送与建 PR 一次成功；
+- 远端 `refs/heads/main` 在推送前后均为 `651b64f` —— PR 流程不触碰主分支；复跑脚本走"PR 已存在则复用"分支，不重复创建。
+
+### 变更
+
+- **删除 `tools/pr.py`**：依据 `tools/README.md:3`（"放构建/烧录/日志解析/文档抽取的可复用脚本"），维护者指出该脚本不属于 `tools/` 范畴；用**删除提交**而非 force-push 实现，因此 `git diff main...branch` 中不再出现该文件，PR 最终只含 4 个文档文件；
+- `SHORTCUT.md` `SC-01`：推送改为"token 从仓库外文件读入的一次性命令"，建 PR 改为网页 compare 链接（或 AI 用一次性脚本调 API，不落仓库）；
+- PR 标题由 `feat: add tools/pr.py ...` 更正为文档类标题。
+
+### 验证
+
+- `git -c credential.helper= push`（token 从 `%USERPROFILE%\.dsh\secrets\github-token.txt` 读入）成功，输出已脱敏；
+- `GET /pulls/1/files` 复核：文件清单不含 `tools/pr.py`；
+- `GET /branches/main` 复核：仍为 `651b64f`。
+
+### 日期更正
+
+- 上一节（`2026-10-25 — 打通 agent 推送 + 建 PR`）中的"端到端验证"实际发生在 **2026-10-26 16:10**（提交 `f207f29` 时间戳为证），已移入本节；成因是沿用了当天旧小节的日期，未按 `AGENTS.md` §5"日期必须实测"核对。
+
+### 备注
+
+- PR 作者显示为 `Koahoshi`（token 所属账号）；如需归属 `JackChen070421`，需换该账号的 token。
+- 工作区 `MDK-ARM/LegWheel.uvprojx` / `.uvoptx` 的 `M` 为 LF/CRLF 假脏，未包含在任何提交内。
+
+### 回退
+
+- 需要脚本时从历史取回：`git show 2ebb24e:tools/pr.py > tools/pr.py`。
+
+---
+
 ## 2026-10-25 — 打通 agent 推送 + 建 PR（tools/pr.py）
 
 ### 新增
@@ -25,22 +61,11 @@
 - `git -c credential.helper= ls-remote origin` exit=0 —— 证明"不触发 `sh.exe`"的推送通道可用；
 - Python `POST /repos/.../pulls` → `401 Requires authentication` —— 建 PR 的 API 通道可达，只差凭据。
 
-### 端到端验证（已完成）
-
-- token 就位：classic token、scope `repo`、账号 `Koahoshi`，对仓库 `permissions.push = true`（协作者身份）；
-- `python tools/pr.py` 一次成功：推送 `docs/shortcut-md` → 创建 **PR #1**（`open` / `mergeable: clean` / +497 −169 / 5 文件）；
-- 远端 `refs/heads/main` 推送前后均为 `651b64f`，确认"PR 流程不触碰主分支"；
-- 复跑 `tools/pr.py` 走"PR 已存在则复用"分支，不重复创建；
-- PR：https://github.com/JackChen070421/AI-LegWheel-Program/pull/1
-
-### 备注
-
-- PR 作者显示为 `Koahoshi`（token 所属账号）；若需归属 `JackChen070421`，需换该账号的 token。
-- 工作区里 `MDK-ARM/LegWheel.uvprojx` / `.uvoptx` 的 `M` 标记为 LF/CRLF 假脏，未包含在本次推送内。
+> 端到端验证、PR 链接、日期更正与 `tools/pr.py` 的移除，见上一节 `## 2026-10-26`。
 
 ### 回退
 
-- 删 `tools/pr.py`；`git config --local --unset http.sslbackend`；`git checkout -- SHORTCUT.md`。
+- `git config --local --unset http.sslbackend`；`git checkout -- SHORTCUT.md`。
 
 ---
 
