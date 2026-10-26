@@ -25,9 +25,18 @@
 - `git -c credential.helper= ls-remote origin` exit=0 —— 证明"不触发 `sh.exe`"的推送通道可用；
 - Python `POST /repos/.../pulls` → `401 Requires authentication` —— 建 PR 的 API 通道可达，只差凭据。
 
-### 未做
+### 端到端验证（已完成）
 
-- **端到端推送/建 PR 未执行**：机器上尚无 GitHub token，`C:\Users\18911\.dsh\secrets\` 需你手动创建并放入 token。
+- token 就位：classic token、scope `repo`、账号 `Koahoshi`，对仓库 `permissions.push = true`（协作者身份）；
+- `python tools/pr.py` 一次成功：推送 `docs/shortcut-md` → 创建 **PR #1**（`open` / `mergeable: clean` / +497 −169 / 5 文件）；
+- 远端 `refs/heads/main` 推送前后均为 `651b64f`，确认"PR 流程不触碰主分支"；
+- 复跑 `tools/pr.py` 走"PR 已存在则复用"分支，不重复创建；
+- PR：https://github.com/JackChen070421/AI-LegWheel-Program/pull/1
+
+### 备注
+
+- PR 作者显示为 `Koahoshi`（token 所属账号）；若需归属 `JackChen070421`，需换该账号的 token。
+- 工作区里 `MDK-ARM/LegWheel.uvprojx` / `.uvoptx` 的 `M` 标记为 LF/CRLF 假脏，未包含在本次推送内。
 
 ### 回退
 
