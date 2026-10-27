@@ -22,7 +22,7 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 ## 2. 先读什么（按顺序）
 
 1. `README.md` — 项目现状与快速开始；
-2. `shortcut.md` — 自然语言 → Git/GitHub/项目操作的唯一指令流；**任何 Git、远端或 `main` 分支操作前必读**；
+2. `shortcut.md` — Git/GitHub/项目操作指南（**非授权来源**；实际权限由用户当次请求 + 平台审批决定）；任何 Git、远端或 `main` 分支操作前必读；
 3. `docs/01-product/overview.md` — 目标、阶段、验收；
 4. `docs/02-architecture/system.md` — 硬件/软件/控制/通信结构；
 5. `docs/04-parameters/parameters.md` — 唯一参数台账（已知/待测/来源）；
@@ -44,7 +44,7 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 | `tools/` | 构建/烧录/日志解析/文档抽取脚本 | 预留 |
 | `archive/` | 快照、legacy、Tier A 记录 | 已有 S0 快照与删除记录 |
 
-> 根目录文件：`shortcut.md`（指令流）、`CHANGELOG.md`（变更记录，最新在前）、`README.md`（项目总览）。
+> 根目录文件：`shortcut.md`（操作指南，非授权来源）、`CHANGELOG.md`（变更记录，最新在前）、`README.md`（项目总览）。
 
 ## 4. 事实源与构建
 

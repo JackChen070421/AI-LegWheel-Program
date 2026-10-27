@@ -78,7 +78,7 @@ VOFA 13 路、115200（以代码为准）；日志/标定以后放 `experiments/
 | 文档 | 用途 |
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | agent 入口 + 黄金原则 |
-| [`shortcut.md`](shortcut.md) | 自然语言 → Git/GitHub/项目操作指令流（main 红线/确认门） |
+| [`shortcut.md`](shortcut.md) | Git/GitHub/项目操作指南（非授权来源；main 红线/确认门） |
 | [`docs/01-product/overview.md`](docs/01-product/overview.md) | 目标、阶段、验收 |
 | [`docs/02-architecture/system.md`](docs/02-architecture/system.md) | 软硬件/控制/通信结构 |
 | [`docs/03-theory/k-matrix.md`](docs/03-theory/k-matrix.md) | K 三份候选/来源（草案） |

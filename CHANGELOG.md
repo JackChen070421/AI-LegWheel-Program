@@ -24,7 +24,7 @@
 
 ### 变更
 
-- `shortcut.md`：增加 §0.1“控制面边界”（指南≠授权；自然语言表≠精确触发/预授权；控制面=用户当次指令+审批+工具策略）；更新默认策略与推送章节。
+- `shortcut.md`：增加 §0.1“控制面边界”（指南≠授权；自然语言表≠精确触发/预授权；控制面=用户当次指令+审批+工具策略）；更新默认策略与推送章节；入口统一标注“非授权来源”。
 - `AGENTS.md`、`README.md`、`docs/00-governance/README.md`、`docs/00-plan/open-questions.md`、`docs/06-plans/roadmap.md`、`docs/00-plan/todo/06-git-baseline-deletion.md`、`docs/00-plan/agent-execution-policy.md`：统一为“默认不直推 `main`；功能分支 push/PR/merge 逐次授权；文档不构成授权”。
 - `docs/00-plan/structure-proposal.md`：历史提案加注，指向 `shortcut.md` §3。
 - 旧 `shortcuts.md` 在 2026-10-27 检查时已不存在；不纳入本 PR。

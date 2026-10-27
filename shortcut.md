@@ -1,4 +1,4 @@
-# shortcut.md — 常用指令流（自然语言 → 操作）
+# shortcut.md — 常用指令流（操作指南，非授权来源）
 
 > 用途：把用户的自然语言请求稳定映射为**可复核的操作**，减少误操作，尤其是 Git/GitHub 与 `main` 分支。  
 > 适用范围：本项目 `D:\RM\LG-AI-process` 的所有 AI 会话（含 subagent）。  

@@ -7,7 +7,7 @@
 | 主题 | 位置 |
 |---|---|
 | agent 入口 + 黄金原则 | [`AGENTS.md`](../../AGENTS.md) |
-| 自然语言 → Git/GitHub/项目操作 | [`shortcut.md`](../../shortcut.md) |
+| Git/GitHub/项目操作指南（非授权来源） | [`shortcut.md`](../../shortcut.md) |
 | 执行纪律/防卡死/提示词 | [`../00-plan/agent-execution-policy.md`](../00-plan/agent-execution-policy.md) |
 | 结构提案 | [`../00-plan/structure-proposal.md`](../00-plan/structure-proposal.md) |
 | 变更记录 | [`CHANGELOG.md`](../../CHANGELOG.md) |
