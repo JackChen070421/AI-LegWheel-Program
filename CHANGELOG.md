@@ -7,6 +7,14 @@
 
 ---
 
+## 2026-10-27 — PR #2 已创建
+
+- PR #2：<https://github.com/JackChen070421/AI-LegWheel-Program/pull/2>
+- head `docs/shortcut-instruction-flow` → base `main@651b64f`；只含本地修改，**不包含** #1 的 `SHORTCUT.md` 或其提交。
+- 未合并；未修改 `main`。
+
+---
+
 ## 2026-10-27 — 远端口径统一；准备 PR #2
 
 ### 背景
