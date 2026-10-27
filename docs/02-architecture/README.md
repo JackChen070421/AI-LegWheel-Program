@@ -9,6 +9,7 @@
 |---|---|
 | [`system.md`](./system.md) | 硬件/软件/控制/通信结构、任务表、状态机、模块地图 |
 | [`build-and-flash.md`](./build-and-flash.md) | Keil/CubeMX 现状、构建步骤、烧录、`.ioc` 注意事项 |
+| [`environment.md`](./environment.md) | 环境/版本矩阵、安装与自检、支持边界（唯一事实源） |
 | [`hardware-overview.md`](./hardware-overview.md) | 车体/接线旧描述（2026-10-19 从根目录 `STRUCTURES.md` 迁入，待更新） |
 | 待建 | `can-protocol.md`（云台协议，等 P0-7/D3）、`state-machine.md`（S4） |
 
