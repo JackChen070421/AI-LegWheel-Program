@@ -1,7 +1,7 @@
 # AGENTS.md — 轮腿平衡步兵项目
 
 > 本文件是 agent 的**唯一入口**：先读这里，再按“先读什么”进入 `docs/`。  
-> 最后更新：2026-10-19（S2 代码/仿真迁移）。项目根：`D:\RM\LG-AI-process`。
+> 最后更新：2026-10-27（统一远端策略；`shortcut.md` 增加控制面边界；`CHANGELOG.md` 最新在前）。项目根：`D:\RM\LG-AI-process`。
 
 ## 0. 黄金原则（Golden Principles）
 
@@ -22,11 +22,12 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 ## 2. 先读什么（按顺序）
 
 1. `README.md` — 项目现状与快速开始；
-2. `docs/01-product/overview.md` — 目标、阶段、验收；
-3. `docs/02-architecture/system.md` — 硬件/软件/控制/通信结构；
-4. `docs/04-parameters/parameters.md` — 唯一参数台账（已知/待测/来源）；
-5. 本次任务相关的 `docs/03-theory/`、`docs/05-experiments/`、`docs/02-architecture/build-and-flash.md`；
-6. 有阻塞先看 `docs/00-plan/open-questions.md` 与 `docs/00-plan/todo/`。
+2. `shortcut.md` — 自然语言 → Git/GitHub/项目操作的唯一指令流；**任何 Git、远端或 `main` 分支操作前必读**；
+3. `docs/01-product/overview.md` — 目标、阶段、验收；
+4. `docs/02-architecture/system.md` — 硬件/软件/控制/通信结构；
+5. `docs/04-parameters/parameters.md` — 唯一参数台账（已知/待测/来源）；
+6. 本次任务相关的 `docs/03-theory/`、`docs/05-experiments/`、`docs/02-architecture/build-and-flash.md`；环境/自检看 `docs/02-architecture/environment.md`；
+7. 有阻塞先看 `docs/00-plan/open-questions.md` 与 `docs/00-plan/todo/`。
 
 ## 3. 目录地图（当前状态）
 
@@ -43,12 +44,14 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 | `tools/` | 构建/烧录/日志解析/文档抽取脚本 | 预留 |
 | `archive/` | 快照、legacy、Tier A 记录 | 已有 S0 快照与删除记录 |
 
+> 根目录文件：`shortcut.md`（指令流）、`CHANGELOG.md`（变更记录，最新在前）、`README.md`（项目总览）。
+
 ## 4. 事实源与构建
 
 - **参数**：`docs/04-parameters/parameters.md`。用户已确认：整车 14.3 kg、单轮 0.55 kg；其余见文档。
 - **K 矩阵**：当前固件读 `lqr_coeffs.cpp`；另有孤儿副本/仿真副本，**来源未定**（P0-1/2，见 TODO-01）。未确认前不要改 K。
 - **构建**：Keil MDK 5.38（UV4；工程实际用 **ARMCLANG V6.19 / LLVM 16**，`pCCUsed=6190000::V6.19::ARMCLANG`）`firmware/LegWheel/MDK-ARM/LegWheel.uvprojx`；唯一已知产物 `firmware/LegWheel/MDK-ARM/LegWheel/LegWheel.hex`（494,095 B）。**Keil Build 已由用户验证通过（2026-10-19）**。
-- **本机工具链（2026-10-19 只读检查）**：安装根 `C:\STM32+Vscode+Keil5`（只读）：Keil 5.38、ARM Compiler 6.19（ARMCLANG/LLVM 16）、STM32CubeMX >6.17.0-RC5、VS Code 1.142；ARM GNU GCC 15.3.1 在 `C:\Program Files (x86)\Arm\...`；**CMake 未在安装目录/PATH 找到**。
+- **本机工具链**：完整版本矩阵、安装与自检见 `docs/02-architecture/environment.md`（2026-10-19 检查：Keil 5.38 + ARMCLANG 6.19 + H7 DFP 4.1.3；安装根 `C:\STM32+Vscode+Keil5` 只读；CMake 不启用）。
 - **CubeMX**：用于板级初始化；后续新增通信口可能再用；`.ioc`/`.mxproject` 保留。但 `.ioc` 已漂移（08-27 vs freertos 10-18），**不要直接重新生成**；本机 CubeMX 只有 F1 固件包，H7 包缺失。
 - **CMake**：未安装/不启用（用户 2026-10-19 确认可能理解错；`build/` 删除即可、不恢复）；当前以 Keil + CubeMX 为准。
 - **仿真**：MATLAB/Simulink，`simulation/chassis-lqr/`。
@@ -58,7 +61,11 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 
 - 改代码必须：说明改了哪几行、为什么、如何验证；不能验证就标“未验证”。
 - 不移动/删除 `researchs/`；不删除任何文件，除非有快照 + 用户明确授权。
-- 不修改工作区外文件；**当前不 push 远端**（用户 2026-10-19 决定）。
+- 不修改工作区外文件；**默认不直接 push `main`、不合并到远端库**；功能分支 push / PR / merge 需用户逐次明确授权（2026-10-27 统一口径，见 `shortcut.md` §3）。
+- **指令流入口**：Git/GitHub、进度询问、下一步建议先按 `shortcut.md`；旧 `shortcuts.md` 已不存在（2026-10-27 检查），不要再引用。
+- **`main` 红线**：任何直接修改/合并 `main` 的请求，先确认权限（远端可达性/分支保护），再展示命令与影响并取得用户明确确认；默认走“分支 + PR”，禁止直接 push `main` 或强推。
+- **远端写操作**：push / PR / merge 需用户逐次明确授权；本文件/`shortcut.md` 均不构成授权，实际以用户当次请求 + 平台审批为准；本机 `gh` 未安装，HTTPS 需可信网络/VPN（2026-10-27 实测）。
+- **记录方向**：`CHANGELOG.md` 新记录写在本文件顶部（最新在前），同日按发生后在前。
 - 不把大二进制（视频/3D/例程/zip）提交进 git；遵守 `.gitignore`。
 - 文档改动：每个数值给来源；相对链接可点；单文档正文 ≤300 行（提案/ADR/附录不计）。
 - 旧车/外部代码要并入时，先放 `archive/legacy/` 并在 TODO-06 记录，不要直接混入 `firmware/`。
@@ -75,4 +82,5 @@ RoboMaster 轮腿平衡步兵：底盘（STM32H723 + FreeRTOS + 1 kHz 控制环 
 改了什么 / 验证了什么 / 证据（path:line）/ 未决问题 / 下一步
 ```
 
+> 交付时说明是否只改了本地、是否提交、是否推送；未提交/未推送要明确写。  
 > 如果发现本文与代码/实测冲突：以证据为准，先改文档并在 `CHANGELOG.md` 记录；不要静默改代码。

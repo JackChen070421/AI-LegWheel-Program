@@ -1,6 +1,6 @@
 # 轮腿平衡步兵（RoboMaster）— 项目总览
 
-> 项目根：`D:\RM\LG-AI-process`　最后更新：2026-10-19（S2 迁移完成）  
+> 项目根：`D:\RM\LG-AI-process`　最后更新：2026-10-26（新增 `shortcut.md` 指令流）  
 > 给 AI/新同学：先读 [`AGENTS.md`](AGENTS.md)；参数以 [`docs/04-parameters/parameters.md`](docs/04-parameters/parameters.md) 为准。
 
 ## 1. 一句话
@@ -39,9 +39,11 @@ RoboMaster 轮腿平衡步兵：两条腿 + 两个驱动轮，靠 LQR/VMC 保持
 
 ## 5. 快速开始
 
+> Git/GitHub 操作（同步/提交/推送/分支/PR/合并 `main`）先按 [`shortcut.md`](shortcut.md)；默认不直接 push `main`，功能分支 PR 需逐次授权。
+
 ### 编译 / 烧录（Keil）
 
-> 本机工具（2026-10-19 只读检查）：Keil MDK 5.38（ARMCLANG 6.19）+ STM32CubeMX >6.17 + VS Code 1.142 + ARM GNU GCC 15.3；安装根 `C:\STM32+Vscode+Keil5`（**只读**）。CMake 未安装/不启用；`build/` 已删（删除即可，不恢复）。CubeMX 用于板级初始化、保留 `.ioc`；不要直接重新生成。**Keil Build 已由用户验证通过（2026-10-19）**。
+> 环境要求、版本矩阵、安装与自检见 [`docs/02-architecture/environment.md`](docs/02-architecture/environment.md)（安装根 `C:\STM32+Vscode+Keil5` 只读）。CMake 未安装/不启用；`build/` 已删、不恢复；CubeMX 保留 `.ioc`，**不要直接重新生成**。**Keil Build 已由用户验证通过（2026-10-19）**。
 
 1. 打开 `firmware/LegWheel/MDK-ARM/LegWheel.uvprojx`；
 2. Build；产物在 `MDK-ARM/LegWheel/LegWheel.hex`（S0 已留档 494,095 B）；
@@ -76,6 +78,7 @@ VOFA 13 路、115200（以代码为准）；日志/标定以后放 `experiments/
 | 文档 | 用途 |
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | agent 入口 + 黄金原则 |
+| [`shortcut.md`](shortcut.md) | 自然语言 → Git/GitHub/项目操作指令流（main 红线/确认门） |
 | [`docs/01-product/overview.md`](docs/01-product/overview.md) | 目标、阶段、验收 |
 | [`docs/02-architecture/system.md`](docs/02-architecture/system.md) | 软硬件/控制/通信结构 |
 | [`docs/03-theory/k-matrix.md`](docs/03-theory/k-matrix.md) | K 三份候选/来源（草案） |
@@ -93,7 +96,7 @@ VOFA 13 路、115200（以代码为准）；日志/标定以后放 `experiments/
 3. 14.3 kg 口径 + `0.788` vs `1.067`（P0-4/5）；
 4. 轮距定义与三种用法（P0-6）；
 5. `BOARD_PROTOCOL.md`、急停、状态映射（P0-7/8/9）；
-6. 旧车代码位置（P0-10，远端暂不需要）；Tier A 已删、Tier B 保留（P0-11）。
+6. 旧车代码位置（P0-10，远端已配置；写操作逐次授权）；Tier A 已删、Tier B 保留（P0-11）。
 
 完整清单与状态见 [`docs/00-plan/open-questions.md`](docs/00-plan/open-questions.md)。
 
