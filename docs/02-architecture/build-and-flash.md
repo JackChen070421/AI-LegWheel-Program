@@ -1,25 +1,16 @@
 # 构建与烧录（Build & Flash）
 
-> 最后更新：2026-10-19（include 清理，Build 复验通过）  
+> 最后更新：2026-10-25（§1 改为链接 environment.md；构建步骤未变）  
 > 状态：**Keil + CubeMX 为当前事实工作流**；Keil Build 已验证（含清理后）；CMake 未安装/不启用；烧录步骤待确认（C4）。  
 > 安装根 `C:\STM32+Vscode+Keil5` **只读**：只浏览/读版本，不修改、不移动、不写（AGENTS.md 黄金原则 9）。
 
-## 1. 本机工具链（2026-10-19 只读检查）
+## 1. 工具链与环境
 
-| 工具 | 路径 | 版本 | 用途/备注 |
-|---|---|---|---|
-| Keil µVision | `C:\STM32+Vscode+Keil5\MDK\Core\UV4\UV4.exe` | **5.38.0.0** | 编译/烧录入口 |
-| ARMCC | `...\MDK\Core\ARM\ARMCC\bin\armcc.exe` | 5.06.0.189 | 旧编译器（当前工程未用） |
-| ARMCLANG | `...\MDK\Core\ARM\ARMCLANG\bin\armclang.exe` | 16.0.0（LLVM 16） | **工程实际使用 ARM Compiler 6.19 / ARMCLANG** |
-| STM32CubeMX | `...\STM32CubeMx\Core\STM32CubeMX.exe` | **>6.17.0-RC5** | 板级初始化/外设配置；`.ioc` 保留 |
-| VS Code | `...\VScode\Core\Code.exe` | 1.142.0 | 用户打开 `firmware/LegWheel`；IntelliSense 配置待生成 |
-| ARM GNU GCC | `C:\Program Files (x86)\Arm\GNU Toolchain mingw-w64-i686-arm-none-eabi\bin\arm-none-eabi-gcc.exe` | **15.3.1** | 不在安装根；CMake 旧 cache 指向 15.2（失效） |
-| CMake | **未找到** | — | 安装根/PATH/常见路径均无；`build/` 旧 cache 指向 `C:/msys64`、`C:/Program Files/toolchain/...`（不存在） |
-| Keil H7 器件包 | `...\MDK\Packs\Keil\STM32H7xx_DFP` | 4.1.3 | STM32H7 支持 |
-| Keil ARM_Compiler 包 | `...\MDK\Packs\Keil\ARM_Compiler` | 1.7.2 | 编译器包 |
-| CubeMX 固件包 | `...\STM32CubeMx\Packs` | 仅 F1 1.8.7 | **H7 固件包缺失**；用 CubeMX 配 H7 前需你安装 |
+完整清单、版本矩阵、安装步骤与支持边界见 [`environment.md`](./environment.md)（**唯一事实源**）。
 
-> 安装/升级/配置由你操作；agent 只读。不要为了让 agent “能编译”去改安装目录。
+- 安装/升级/配置由用户操作；agent 只读，不为了让“能编译”去改安装目录；
+- 一次性自检：`powershell -NoProfile -ExecutionPolicy Bypass -File tools\check-env.ps1`；
+- 当前构建只依赖 Keil MDK 5.38（ARMCLANG 6.19）+ 有效授权；CMake 不启用。
 
 ## 2. Keil（当前编译入口）
 

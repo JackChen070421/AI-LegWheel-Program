@@ -1,11 +1,12 @@
 # tools — 脚本与工具
 
-> 放构建/烧录/日志解析/文档抽取的**可复用脚本**；一次性命令放 `archive/`。当前均为预留。
+> 放构建/烧录/日志解析/文档抽取的**可复用脚本**；一次性命令放 `archive/`。部分已实现。
 
 ## 计划
 
 | 脚本 | 用途 | 状态 |
 |---|---|---|
+| `check-env.ps1` | 环境自检（Keil/授权/工程完整性/MATLAB），只读 | ✅ 2026-10-25 |
 | `build-keil.ps1` | 调 Keil/UV4 编译并检查 hex | 待写（需 P0-3） |
 | `flash.ps1` | DAPLink/ST-Link 烧录 | 待写（需 C4） |
 | `extract-html.ps1` | 上交 HTML 去标签/抽正文/保留 `texencoding` | 待写 |

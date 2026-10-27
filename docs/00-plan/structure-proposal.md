@@ -5,6 +5,8 @@
 > 更新：S0 快照 + git 基线、S1 结构骨架、S2 代码/仿真迁移已完成；见 `archive/manifests/S0-BASELINE.md`、`S2-MIGRATION-20261019.md`、`AGENTS.md`；tag `pre-structure-20261019`、`s0-baseline`、`s1-structure-skeleton`。
 > 依据：根目录 `README.md` 的今晚四步；t1（固件/构建）、t2（仿真/资料）、t3（监管审阅）三份简报；Captain 定点复核（`Chassis.cpp:13`、`Chassis.h:52-55`、`vmc.cpp:22-23`、`lqr_coeffs.cpp:6`、`MDK-ARM/LegWheel/LegWheel.hex` 等）。  
 > 约定：**目录/文件名用英文；文档内容用中文；具体资料文件保留中文名**（按你 2026-10-19 的决定）。
+>
+> **历史提案（2026-10-19）**：文中“不 push 远端”等约束反映当时决定；现行远端策略见 [`shortcut.md`](../../shortcut.md) §3（2026-10-27 统一口径）。
 
 ---
 

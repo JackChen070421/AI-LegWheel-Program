@@ -7,6 +7,7 @@
 | 主题 | 位置 |
 |---|---|
 | agent 入口 + 黄金原则 | [`AGENTS.md`](../../AGENTS.md) |
+| Git/GitHub/项目操作指南（非授权来源） | [`shortcut.md`](../../shortcut.md) |
 | 执行纪律/防卡死/提示词 | [`../00-plan/agent-execution-policy.md`](../00-plan/agent-execution-policy.md) |
 | 结构提案 | [`../00-plan/structure-proposal.md`](../00-plan/structure-proposal.md) |
 | 变更记录 | [`CHANGELOG.md`](../../CHANGELOG.md) |
@@ -22,7 +23,7 @@
 
 ## 记录规则
 
-1. **每次改动**写 `CHANGELOG.md`（时间、类型、内容、验证、回退）；
+1. **每次改动**写 `CHANGELOG.md`（时间、类型、内容、验证、回退）；**新记录写在顶部，越靠前越新**；
 2. **结构/构建/参数来源**变更写 ADR（`docs/07-decisions/`）；
 3. **删除/迁移**前有快照或 git 提交；删除清单进 `archive/manifests/`；
 4. **实验**用 `docs/05-experiments/test-log-template.md`；
@@ -37,11 +38,12 @@
 | 数据文件（含 Tier A/研究资料） | 从 `archive/snapshots/snapshot-20261019.tar` 解包 |
 | 单个文件 | `git checkout <tag> -- <path>` 或从快照取 |
 
-> 当前不 push 远端（用户 2026-10-19 决定）；快照是唯一异地前的完整备份。
+> 远端写操作逐次授权；默认不直接 push `main`，`main` 合并走 PR（2026-10-27 统一口径，见 [`shortcut.md`](../../shortcut.md) §3）；快照仍是完整备份。
 
 ## AI 协作
 
 - 先读 `AGENTS.md` → 本目录 → 任务相关文档；
+- Git/GitHub/`main` 分支操作按 [`shortcut.md`](../../shortcut.md)；远端写操作需逐次授权；
 - 不编造；不确定先问；时间盒/卡死上报按 `agent-execution-policy.md`；
 - 长产出落文件，消息只放摘要；改完给“改了什么/验证/证据/未决/下一步”。
 
